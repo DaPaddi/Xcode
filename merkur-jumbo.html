@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merkur Jumbo Jumbo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a0a00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Arial Black', Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  .cabinet {
+    width: 520px;
+    background: linear-gradient(180deg, #c8a000 0%, #f5d000 15%, #e8b800 50%, #c8a000 85%, #8a6a00 100%);
+    border-radius: 24px 24px 18px 18px;
+    border: 4px solid #7a5500;
+    box-shadow:
+      0 0 0 3px #f5d000,
+      0 0 0 6px #c8a000,
+      0 20px 60px rgba(0,0,0,0.8),
+      inset 0 2px 4px rgba(255,255,255,0.3);
+    padding: 18px 20px 22px;
+    position: relative;
+  }
+
+  /* Top logo area */
+  .top-header {
+    background: linear-gradient(135deg, #cc0000 0%, #ff2200 50%, #cc0000 100%);
+    border-radius: 14px 14px 0 0;
+    border: 3px solid #880000;
+    padding: 10px 16px;
+    text-align: center;
+    margin-bottom: 10px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.4), 0 3px 6px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .top-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 8px,
+      rgba(0,0,0,0.1) 8px,
+      rgba(0,0,0,0.1) 10px
+    );
+  }
+  .logo-merkur {
+    font-size: 13px;
+    color: #ffd700;
+    font-weight: 900;
+    letter-spacing: 6px;
+    text-shadow: 0 0 8px #ff6600, 1px 1px 2px #000;
+    font-family: 'Arial Black', Arial, sans-serif;
+  }
+  .logo-jumbo {
+    font-size: 34px;
+    color: #ffd700;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-shadow: 0 0 12px #ffaa00, 2px 2px 0 #aa5500, -1px -1px 0 #ff8800;
+    line-height: 1.1;
+    font-style: italic;
+  }
+  .logo-sub {
+    font-size: 11px;
+    color: #ffcc44;
+    letter-spacing: 3px;
+    text-shadow: 0 0 6px #ff8800;
+  }
+
+  /* Marquee lights */
+  .lights-row {
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+  }
+  .light {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff 0%, #ffdd00 40%, #cc8800 100%);
+    box-shadow: 0 0 6px #ffdd00, 0 0 12px #ff8800;
+    transition: all 0.15s;
+  }
+  .light.off {
+    background: radial-gradient(circle at 35% 35%, #665500 0%, #443300 100%);
+    box-shadow: none;
+  }
+
+  /* Main display area */
+  .display-area {
+    background: #000;
+    border-radius: 8px;
+    border: 4px solid #555;
+    padding: 4px;
+    margin-bottom: 10px;
+    box-shadow: inset 0 4px 12px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .display-inner {
+    background: #111;
+    border-radius: 6px;
+    padding: 8px;
+    border: 2px solid #333;
+  }
+
+  /* Win line */
+  .win-line {
+    height: 3px;
+    background: rgba(255, 50, 50, 0.3);
+    border-radius: 2px;
+    position: relative;
+    margin: 0 4px 8px;
+  }
+  .win-line.active {
+    background: rgba(255, 50, 50, 0.9);
+    box-shadow: 0 0 8px rgba(255, 50, 50, 0.8);
+    animation: pulseLine 0.3s ease-in-out infinite alternate;
+  }
+  @keyframes pulseLine {
+    from { opacity: 0.7; }
+    to { opacity: 1; }
+  }
+
+  /* Reels */
+  .reels-container {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  .reel-frame {
+    flex: 1;
+    background: #000;
+    border-radius: 6px;
+    border: 2px solid #444;
+    overflow: hidden;
+    height: 120px;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+  }
+  .reel-frame.held {
+    border-color: #00cc44;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 10px rgba(0,200,68,0.5);
+  }
+  .reel-strip {
+    position: absolute;
+    width: 100%;
+    transition: transform 0.08s linear;
+  }
+  .reel-cell {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 58px;
+    user-select: none;
+  }
+  .reel-overlay-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 30px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .reel-overlay-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 30px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .hold-label {
+    display: none;
+    position: absolute;
+    bottom: 2px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 900;
+    color: #00ff66;
+    letter-spacing: 2px;
+    text-shadow: 0 0 4px #00ff66;
+    z-index: 3;
+  }
+  .reel-frame.held .hold-label { display: block; }
+
+  /* Info panels */
+  .info-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .info-panel {
+    flex: 1;
+    background: #0a0a1a;
+    border: 2px solid #333;
+    border-radius: 6px;
+    padding: 5px 8px;
+    text-align: center;
+  }
+  .info-label {
+    font-size: 8px;
+    color: #888;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .info-value {
+    font-size: 22px;
+    font-weight: 900;
+    color: #ff4400;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 8px #ff2200;
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+  .info-value.credits { color: #00dd44; text-shadow: 0 0 8px #00aa33; }
+  .info-value.win { color: #ffdd00; text-shadow: 0 0 8px #ff8800; }
+
+  /* Message display */
+  .message-display {
+    background: #000;
+    border: 2px solid #440000;
+    border-radius: 6px;
+    padding: 6px 12px;
+    text-align: center;
+    margin: 8px 0;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .message-text {
+    font-size: 13px;
+    font-weight: 900;
+    color: #ffdd00;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px #ff8800;
+    font-family: 'Courier New', monospace;
+  }
+  .message-text.win-msg { color: #ff4400; text-shadow: 0 0 12px #ff2200; animation: blink 0.4s infinite; }
+  @keyframes blink { 50% { opacity: 0.4; } }
+
+  /* Button area */
+  .button-area {
+    background: linear-gradient(180deg, #880000 0%, #aa0000 50%, #880000 100%);
+    border-radius: 0 0 14px 14px;
+    border: 3px solid #660000;
+    padding: 14px 16px 16px;
+    margin-top: 10px;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
+  }
+
+  /* Hold buttons */
+  .hold-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .hold-btn {
+    flex: 1;
+    height: 44px;
+    border-radius: 8px;
+    border: 3px solid #333;
+    background: linear-gradient(180deg, #3a3a3a 0%, #222 50%, #111 100%);
+    color: #aaa;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.1s;
+    text-transform: uppercase;
+    box-shadow: 0 4px 0 #000, 0 5px 4px rgba(0,0,0,0.5);
+    position: relative;
+    top: 0;
+  }
+  .hold-btn:active, .hold-btn.pressed {
+    top: 4px;
+    box-shadow: 0 0 0 #000, 0 1px 4px rgba(0,0,0,0.5);
+  }
+  .hold-btn.active {
+    background: linear-gradient(180deg, #006622 0%, #004d19 50%, #003311 100%);
+    border-color: #00aa44;
+    color: #00ff66;
+    text-shadow: 0 0 6px #00ff66;
+    box-shadow: 0 4px 0 #000, 0 0 10px rgba(0,200,68,0.4);
+  }
+
+  /* Main buttons */
+  .main-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-gamble {
+    width: 80px;
+    height: 60px;
+    border-radius: 50%;
+    border: 4px solid #ffcc00;
+    background: radial-gradient(circle at 40% 35%, #ffee44 0%, #ffcc00 40%, #cc9900 100%);
+    color: #660000;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 6px 0 #886600, 0 8px 8px rgba(0,0,0,0.5), inset 0 1px 3px rgba(255,255,255,0.5);
+    transition: all 0.1s;
+    position: relative;
+    top: 0;
+  }
+  .btn-gamble:active {
+    top: 6px;
+    box-shadow: 0 0 0 #886600, 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .btn-start {
+    flex: 1;
+    height: 60px;
+    border-radius: 12px;
+    border: 4px solid #cc0000;
+    background: radial-gradient(ellipse at 50% 35%, #ff4444 0%, #cc0000 50%, #880000 100%);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 6px 0 #440000, 0 8px 8px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.2);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    transition: all 0.1s;
+    position: relative;
+    top: 0;
+  }
+  .btn-start:active, .btn-start.pressed {
+    top: 6px;
+    box-shadow: 0 0 0 #440000, 0 2px 4px rgba(0,0,0,0.5);
+  }
+  .btn-start:disabled {
+    background: radial-gradient(ellipse at 50% 35%, #664444 0%, #442222 50%, #221111 100%);
+    border-color: #442222;
+    color: #664444;
+    text-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .btn-coin {
+    width: 80px;
+    height: 60px;
+    border-radius: 50%;
+    border: 4px solid #aaaaaa;
+    background: radial-gradient(circle at 40% 35%, #ffffff 0%, #cccccc 40%, #888888 100%);
+    color: #333;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 6px 0 #444, 0 8px 8px rgba(0,0,0,0.5), inset 0 1px 3px rgba(255,255,255,0.8);
+    transition: all 0.1s;
+    position: relative;
+    top: 0;
+  }
+  .btn-coin:active {
+    top: 6px;
+    box-shadow: 0 0 0 #444, 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  /* Coin slot */
+  .coin-slot-area {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .coin-slot {
+    width: 50px;
+    height: 8px;
+    background: #111;
+    border-radius: 4px;
+    border: 2px solid #555;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+  }
+  .coin-slot-label {
+    font-size: 8px;
+    color: #aaa;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+
+  /* Win table on side */
+  .win-table {
+    position: absolute;
+    right: -160px;
+    top: 20px;
+    width: 150px;
+    background: linear-gradient(180deg, #1a0000, #220000);
+    border: 2px solid #550000;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 10px;
+  }
+  .win-table-title {
+    color: #ffdd00;
+    font-weight: 900;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 6px #ff8800;
+  }
+  .win-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 0;
+    border-bottom: 1px solid #330000;
+  }
+  .win-symbols { font-size: 14px; letter-spacing: 2px; }
+  .win-amount { color: #ff4400; font-weight: 900; font-family: 'Courier New', monospace; }
+
+  /* Risk/Gamble overlay */
+  .risk-overlay {
+    display: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.95);
+    border-radius: 24px 24px 18px 18px;
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .risk-overlay.active { display: flex; }
+  .risk-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ffdd00;
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px #ff8800;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .risk-amount {
+    font-size: 48px;
+    font-weight: 900;
+    color: #ff4400;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 20px #ff2200;
+    margin-bottom: 30px;
+  }
+  .risk-cards {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .risk-card {
+    width: 80px;
+    height: 110px;
+    border-radius: 8px;
+    border: 3px solid #666;
+    background: #f8f8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 36px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  .risk-card:hover { transform: scale(1.05); border-color: #ffdd00; }
+  .risk-card.red { color: #cc0000; }
+  .risk-card.black { color: #111; }
+  .risk-card.revealed {
+    animation: cardFlip 0.3s ease-out;
+  }
+  @keyframes cardFlip {
+    0% { transform: scaleX(0); }
+    50% { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
+  }
+  .risk-question { font-size: 14px; color: #ffdd00; letter-spacing: 2px; margin-bottom: 10px; }
+  .risk-buttons { display: flex; gap: 20px; }
+  .risk-btn {
+    padding: 12px 30px;
+    border-radius: 8px;
+    border: 3px solid;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.1s;
+    text-transform: uppercase;
+  }
+  .risk-btn-red {
+    background: linear-gradient(180deg, #ff4444, #cc0000);
+    border-color: #ff2222;
+    color: #fff;
+    box-shadow: 0 4px 0 #880000;
+  }
+  .risk-btn-black {
+    background: linear-gradient(180deg, #555, #222);
+    border-color: #888;
+    color: #fff;
+    box-shadow: 0 4px 0 #000;
+  }
+  .risk-btn-collect {
+    background: linear-gradient(180deg, #44cc44, #009900);
+    border-color: #22ff22;
+    color: #fff;
+    box-shadow: 0 4px 0 #004400;
+  }
+  .risk-result {
+    font-size: 24px;
+    font-weight: 900;
+    height: 36px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px currentColor;
+  }
+  .risk-result.win { color: #00ff44; }
+  .risk-result.lose { color: #ff2200; }
+
+  /* Flashing cabinet lights animation */
+  @keyframes cabinetGlow {
+    0%, 100% { box-shadow: 0 0 0 3px #f5d000, 0 0 0 6px #c8a000, 0 20px 60px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.3); }
+    50% { box-shadow: 0 0 0 3px #ffee00, 0 0 0 6px #ffcc00, 0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(255,200,0,0.3), inset 0 2px 4px rgba(255,255,255,0.3); }
+  }
+  .cabinet.winning { animation: cabinetGlow 0.4s infinite; }
+</style>
+</head>
+<body>
+
+<div class="cabinet" id="cabinet">
+  <!-- Win table -->
+  <div class="win-table">
+    <div class="win-table-title">GEWINNE</div>
+    <div class="win-row"><span class="win-symbols">7️⃣7️⃣7️⃣</span><span class="win-amount">100</span></div>
+    <div class="win-row"><span class="win-symbols">🔔🔔🔔</span><span class="win-amount">50</span></div>
+    <div class="win-row"><span class="win-symbols">⭐⭐⭐</span><span class="win-amount">30</span></div>
+    <div class="win-row"><span class="win-symbols">🍇🍇🍇</span><span class="win-amount">20</span></div>
+    <div class="win-row"><span class="win-symbols">🍊🍊🍊</span><span class="win-amount">15</span></div>
+    <div class="win-row"><span class="win-symbols">🍋🍋🍋</span><span class="win-amount">10</span></div>
+    <div class="win-row"><span class="win-symbols">🍒🍒🍒</span><span class="win-amount">8</span></div>
+    <div class="win-row"><span class="win-symbols">🍒🍒　</span><span class="win-amount">2</span></div>
+    <div class="win-row"><span class="win-symbols">🍒　　</span><span class="win-amount">1</span></div>
+    <div style="margin-top:10px; color:#ffdd00; font-size:9px; letter-spacing:1px; text-align:center;">EINSATZ: 1 MARK</div>
+  </div>
+
+  <!-- Top header -->
+  <div class="top-header">
+    <div class="logo-merkur">✦ MERKUR ✦</div>
+    <div class="logo-jumbo">JUMBO JUMBO</div>
+    <div class="logo-sub">★ GELDSPIELAUTOMAT ★</div>
+  </div>
+
+  <!-- Marquee lights -->
+  <div class="lights-row" id="lightsRow">
+    <div class="light" id="l0"></div>
+    <div class="light off" id="l1"></div>
+    <div class="light" id="l2"></div>
+    <div class="light off" id="l3"></div>
+    <div class="light" id="l4"></div>
+    <div class="light off" id="l5"></div>
+    <div class="light" id="l6"></div>
+    <div class="light off" id="l7"></div>
+    <div class="light" id="l8"></div>
+    <div class="light off" id="l9"></div>
+    <div class="light" id="l10"></div>
+    <div class="light off" id="l11"></div>
+    <div class="light" id="l12"></div>
+    <div class="light off" id="l13"></div>
+    <div class="light" id="l14"></div>
+    <div class="light off" id="l15"></div>
+    <div class="light" id="l16"></div>
+    <div class="light off" id="l17"></div>
+    <div class="light" id="l18"></div>
+    <div class="light off" id="l19"></div>
+  </div>
+
+  <!-- Main display -->
+  <div class="display-area">
+    <div class="display-inner">
+      <div class="win-line" id="winLine"></div>
+      <div class="reels-container">
+        <div class="reel-frame" id="reel0">
+          <div class="reel-overlay-top"></div>
+          <div class="reel-strip" id="strip0"></div>
+          <div class="reel-overlay-bottom"></div>
+          <div class="hold-label">HOLD</div>
+        </div>
+        <div class="reel-frame" id="reel1">
+          <div class="reel-overlay-top"></div>
+          <div class="reel-strip" id="strip1"></div>
+          <div class="reel-overlay-bottom"></div>
+          <div class="hold-label">HOLD</div>
+        </div>
+        <div class="reel-frame" id="reel2">
+          <div class="reel-overlay-top"></div>
+          <div class="reel-strip" id="strip2"></div>
+          <div class="reel-overlay-bottom"></div>
+          <div class="hold-label">HOLD</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-panel">
+          <div class="info-label">KREDIT</div>
+          <div class="info-value credits" id="creditsDisplay">00</div>
+        </div>
+        <div class="info-panel">
+          <div class="info-label">GEWINN</div>
+          <div class="info-value win" id="winDisplay">00</div>
+        </div>
+        <div class="info-panel">
+          <div class="info-label">EINSATZ</div>
+          <div class="info-value" id="betDisplay">01</div>
+        </div>
+      </div>
+      <div class="message-display">
+        <div class="message-text" id="messageText">MÜNZE EINWERFEN</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="button-area">
+    <div class="hold-buttons">
+      <button class="hold-btn" id="holdBtn0" onclick="toggleHold(0)">HOLD 1</button>
+      <button class="hold-btn" id="holdBtn1" onclick="toggleHold(1)">HOLD 2</button>
+      <button class="hold-btn" id="holdBtn2" onclick="toggleHold(2)">HOLD 3</button>
+    </div>
+    <div class="main-buttons">
+      <button class="btn-gamble" id="gambleBtn" onclick="startRisk()" disabled>RISIKO</button>
+      <button class="btn-start" id="startBtn" onclick="spin()">START</button>
+      <button class="btn-coin" onclick="insertCoin()">+1 DM</button>
+    </div>
+  </div>
+
+  <!-- Risk/Gamble overlay -->
+  <div class="risk-overlay" id="riskOverlay">
+    <div class="risk-title">✦ RISIKO ✦</div>
+    <div class="risk-amount" id="riskAmount">0</div>
+    <div class="risk-question">ROT oder SCHWARZ?</div>
+    <div class="risk-cards" id="riskCards">
+      <div class="risk-card" id="riskCard0" style="background:#f8f8f0;">?</div>
+      <div class="risk-card" id="riskCard1" style="background:#f8f8f0;">?</div>
+      <div class="risk-card" id="riskCard2" style="background:#f8f8f0;">?</div>
+    </div>
+    <div class="risk-result" id="riskResult"></div>
+    <div class="risk-buttons">
+      <button class="risk-btn risk-btn-red" id="riskRedBtn" onclick="riskGuess('red')">ROT ♥♦</button>
+      <button class="risk-btn risk-btn-black" id="riskBlackBtn" onclick="riskGuess('black')">SCHWARZ ♣♠</button>
+      <button class="risk-btn risk-btn-collect" id="riskCollectBtn" onclick="collectRisk()">NEHMEN</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== AUDIO ENGINE ======
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new AudioContext();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playTone(freq, duration, type = 'square', gainVal = 0.3, delay = 0) {
+  const ctx = getAudioCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+  gain.gain.setValueAtTime(0, ctx.currentTime + delay);
+  gain.gain.linearRampToValueAtTime(gainVal, ctx.currentTime + delay + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+  osc.start(ctx.currentTime + delay);
+  osc.stop(ctx.currentTime + delay + duration + 0.05);
+}
+
+function playCoinInsert() {
+  playTone(800, 0.05, 'square', 0.2);
+  playTone(1200, 0.08, 'square', 0.2, 0.06);
+  playTone(600, 0.1, 'square', 0.15, 0.1);
+}
+
+function playReelSpin() {
+  const ctx = getAudioCtx();
+  const bufferSize = ctx.sampleRate * 0.1;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.value = 400;
+  filter.Q.value = 0.5;
+  const gain = ctx.createGain();
+  gain.gain.value = 0.15;
+  source.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+  source.start();
+  source.stop(ctx.currentTime + 0.1);
+}
+
+function playReelStop(index) {
+  const freqs = [300, 280, 260];
+  playTone(freqs[index], 0.08, 'sawtooth', 0.25);
+  playTone(freqs[index] * 0.7, 0.12, 'square', 0.15, 0.05);
+}
+
+function playWinSmall() {
+  const notes = [523, 659, 784, 1047];
+  notes.forEach((f, i) => playTone(f, 0.12, 'square', 0.25, i * 0.1));
+}
+
+function playWinBig() {
+  const melody = [523, 659, 784, 1047, 1319, 1047, 784, 1047];
+  melody.forEach((f, i) => playTone(f, 0.15, 'square', 0.3, i * 0.08));
+}
+
+function playWinJackpot() {
+  const ctx = getAudioCtx();
+  const melody = [784, 880, 988, 1047, 1175, 1319, 1175, 1047, 988, 880, 784, 659, 523];
+  melody.forEach((f, i) => {
+    playTone(f, 0.2, 'square', 0.3, i * 0.1);
+    playTone(f * 0.5, 0.2, 'sawtooth', 0.15, i * 0.1);
+  });
+  setTimeout(() => {
+    const coinMelody = [1047, 1319, 1568, 1319, 1047, 880, 784];
+    coinMelody.forEach((f, i) => playTone(f, 0.15, 'sine', 0.3, i * 0.12));
+  }, 1400);
+}
+
+function playCoinPayout() {
+  for (let i = 0; i < 8; i++) {
+    const f = 800 + Math.random() * 400;
+    playTone(f, 0.04, 'square', 0.2, i * 0.06);
+  }
+}
+
+function playRiskWin() {
+  const notes = [659, 784, 1047, 1319];
+  notes.forEach((f, i) => playTone(f, 0.2, 'sine', 0.3, i * 0.1));
+}
+
+function playRiskLose() {
+  playTone(200, 0.3, 'sawtooth', 0.3);
+  playTone(150, 0.4, 'sawtooth', 0.25, 0.25);
+}
+
+function playButtonClick() {
+  playTone(440, 0.05, 'square', 0.15);
+}
+
+// ====== REEL SYMBOLS ======
+const SYMBOLS = ['🍒', '🍋', '🍊', '🍇', '⭐', '🔔', '7️⃣'];
+const WEIGHTS = [30, 20, 18, 15, 10, 5, 2]; // probability weights
+
+// Reel strips (each reel has a sequence of symbols)
+const REEL_STRIPS = [
+  ['🍒','🍒','🍋','🍒','🍊','🍒','🍋','🍇','🍒','🍊','🍋','⭐','🍒','🍒','🍊','🍋','🍇','🍒','🔔','🍋','🍒','⭐','🍊','🍒','7️⃣','🍒','🍊','🍋','🍒','🍇'],
+  ['🍒','🍋','🍒','🍊','🍒','🍋','🍒','🍇','🍋','🍒','⭐','🍊','🍒','🍋','🍒','🔔','🍋','🍒','🍊','🍒','🍋','🍇','🍒','⭐','🍊','🍒','7️⃣','🍋','🍒','🍊'],
+  ['🍒','🍊','🍒','🍋','🍒','🍊','🍒','🍒','🍋','🍊','🍒','🍇','🍋','🍒','⭐','🍊','🍒','🍋','🍒','🔔','🍊','🍋','🍒','🍇','⭐','🍒','🍊','7️⃣','🍋','🍒'],
+];
+
+// ====== GAME STATE ======
+let credits = 0;
+let currentWin = 0;
+let spinning = false;
+let holdState = [false, false, false];
+let reelPositions = [0, 1, 2];
+let currentSymbols = ['🍒', '🍋', '🍊'];
+let canHold = false;
+let canRisk = false;
+let riskAmount = 0;
+let lightInterval = null;
+let spinIntervals = [null, null, null];
+let reelStopped = [false, false, false];
+
+// ====== DISPLAY SETUP ======
+function initReels() {
+  for (let r = 0; r < 3; r++) {
+    const strip = document.getElementById('strip' + r);
+    strip.innerHTML = '';
+    const extended = [...REEL_STRIPS[r], ...REEL_STRIPS[r]];
+    extended.forEach(sym => {
+      const cell = document.createElement('div');
+      cell.className = 'reel-cell';
+      cell.textContent = sym;
+      strip.appendChild(cell);
+    });
+    setReelPosition(r, reelPositions[r]);
+  }
+}
+
+function setReelPosition(reel, pos) {
+  const strip = document.getElementById('strip' + reel);
+  const len = REEL_STRIPS[reel].length;
+  const idx = ((pos % len) + len) % len;
+  strip.style.transform = `translateY(${-idx * 120}px)`;
+  currentSymbols[reel] = REEL_STRIPS[reel][idx];
+}
+
+// ====== MARQUEE LIGHTS ======
+let lightPhase = 0;
+function startLights() {
+  if (lightInterval) return;
+  lightInterval = setInterval(() => {
+    lightPhase = (lightPhase + 1) % 2;
+    for (let i = 0; i < 20; i++) {
+      const el = document.getElementById('l' + i);
+      if (el) {
+        const on = (i % 2) === lightPhase;
+        el.classList.toggle('off', !on);
+      }
+    }
+  }, 250);
+}
+
+function fastLights() {
+  clearInterval(lightInterval);
+  lightInterval = null;
+  let phase = 0;
+  const fast = setInterval(() => {
+    phase = (phase + 1) % 2;
+    for (let i = 0; i < 20; i++) {
+      const el = document.getElementById('l' + i);
+      if (el) el.classList.toggle('off', (i % 2) !== phase);
+    }
+  }, 80);
+  setTimeout(() => {
+    clearInterval(fast);
+    startLights();
+  }, 2000);
+}
+
+// ====== GAME LOGIC ======
+function updateDisplays() {
+  document.getElementById('creditsDisplay').textContent = String(credits).padStart(2, '0');
+  document.getElementById('winDisplay').textContent = String(currentWin).padStart(2, '0');
+}
+
+function setMessage(msg, cls = '') {
+  const el = document.getElementById('messageText');
+  el.textContent = msg;
+  el.className = 'message-text' + (cls ? ' ' + cls : '');
+}
+
+function insertCoin() {
+  playCoinInsert();
+  credits++;
+  updateDisplays();
+  setMessage('VIEL GLÜCK!');
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('startBtn').textContent = 'START';
+}
+
+function toggleHold(idx) {
+  if (!canHold || spinning) return;
+  playButtonClick();
+  holdState[idx] = !holdState[idx];
+  const btn = document.getElementById('holdBtn' + idx);
+  const frame = document.getElementById('reel' + idx);
+  btn.classList.toggle('active', holdState[idx]);
+  frame.classList.toggle('held', holdState[idx]);
+}
+
+function getWin(syms) {
+  const [a, b, c] = syms;
+  if (a === b && b === c) {
+    switch (a) {
+      case '7️⃣': return 100;
+      case '🔔': return 50;
+      case '⭐': return 30;
+      case '🍇': return 20;
+      case '🍊': return 15;
+      case '🍋': return 10;
+      case '🍒': return 8;
+    }
+  }
+  if (a === '🍒' && b === '🍒') return 2;
+  if (a === '🍒') return 1;
+  return 0;
+}
+
+function pickTargetPosition(reel) {
+  // Slightly bias towards cherries (index 0 in strips) but mostly random
+  const strip = REEL_STRIPS[reel];
+  const pos = Math.floor(Math.random() * strip.length);
+  return pos;
+}
+
+function spin() {
+  if (credits <= 0 || spinning) return;
+  playButtonClick();
+
+  credits--;
+  currentWin = 0;
+  updateDisplays();
+  canHold = false;
+  canRisk = false;
+  spinning = true;
+
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('gambleBtn').disabled = true;
+  document.getElementById('winLine').classList.remove('active');
+  document.getElementById('cabinet').classList.remove('winning');
+  setMessage('DREHT...');
+
+  // Reset hold for non-held reels
+  const targets = [0, 0, 0];
+  for (let r = 0; r < 3; r++) {
+    if (!holdState[r]) {
+      targets[r] = pickTargetPosition(r);
+    } else {
+      targets[r] = reelPositions[r];
+    }
+  }
+
+  reelStopped = [false, false, false];
+
+  // Animate reels
+  const stopDelays = [1200, 1800, 2400];
+  const spinSpeeds = [40, 40, 40];
+  let spinFrames = [0, 0, 0];
+
+  for (let r = 0; r < 3; r++) {
+    if (holdState[r]) {
+      reelStopped[r] = true;
+      continue;
+    }
+
+    const reelIdx = r;
+    const stripLen = REEL_STRIPS[r].length;
+    let frame = reelPositions[r];
+
+    const animate = () => {
+      frame = (frame + 1) % stripLen;
+      setReelPosition(reelIdx, frame);
+      if (Math.random() < 0.4) playReelSpin();
+    };
+
+    spinIntervals[r] = setInterval(animate, spinSpeeds[r]);
+
+    setTimeout(() => {
+      clearInterval(spinIntervals[reelIdx]);
+      // Snap to target
+      reelPositions[reelIdx] = targets[reelIdx];
+      setReelPosition(reelIdx, targets[reelIdx]);
+      playReelStop(reelIdx);
+      reelStopped[reelIdx] = true;
+
+      if (reelStopped[0] && reelStopped[1] && reelStopped[2]) {
+        setTimeout(onAllStopped, 200);
+      }
+    }, stopDelays[r]);
+  }
+
+  // If all held
+  if (holdState[0] && holdState[1] && holdState[2]) {
+    setTimeout(onAllStopped, 400);
+  }
+
+  // Reset holds after spin starts
+  holdState = [false, false, false];
+  for (let r = 0; r < 3; r++) {
+    document.getElementById('holdBtn' + r).classList.remove('active');
+    document.getElementById('reel' + r).classList.remove('held');
+  }
+}
+
+function onAllStopped() {
+  spinning = false;
+  const syms = currentSymbols.slice();
+  const win = getWin(syms);
+
+  if (win > 0) {
+    currentWin = win;
+    credits += win;
+    updateDisplays();
+    document.getElementById('winLine').classList.add('active');
+    document.getElementById('cabinet').classList.add('winning');
+    fastLights();
+
+    if (win >= 100) {
+      playWinJackpot();
+      setMessage('JACKPOT!!! 🎰', 'win-msg');
+      setTimeout(payoutCoins, 500);
+    } else if (win >= 20) {
+      playWinBig();
+      setMessage('SUPER GEWINN! ' + win, 'win-msg');
+      setTimeout(payoutCoins, 300);
+    } else {
+      playWinSmall();
+      setMessage('GEWINN: ' + win + ' MARK', 'win-msg');
+    }
+
+    canRisk = true;
+    riskAmount = win;
+    setTimeout(() => {
+      document.getElementById('gambleBtn').disabled = false;
+    }, 500);
+  } else {
+    setMessage('KEIN GEWINN');
+  }
+
+  // Enable hold/start
+  setTimeout(() => {
+    canHold = credits > 0;
+    if (credits > 0) {
+      document.getElementById('startBtn').disabled = false;
+      document.getElementById('startBtn').textContent = 'START';
+      setMessage(win > 0 ? 'WEITER SPIELEN?' : 'NOCHMAL?');
+    } else {
+      setMessage('MÜNZE EINWERFEN');
+      document.getElementById('startBtn').disabled = true;
+    }
+  }, win >= 20 ? 2500 : 800);
+}
+
+function payoutCoins() {
+  let count = 0;
+  const interval = setInterval(() => {
+    playCoinPayout();
+    count++;
+    if (count >= 5) clearInterval(interval);
+  }, 150);
+}
+
+// ====== RISK GAME ======
+const CARD_SUITS_RED = ['♥', '♦'];
+const CARD_SUITS_BLACK = ['♣', '♠'];
+const CARD_VALUES = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+
+function getRandomCard() {
+  const isRed = Math.random() < 0.5;
+  const suit = isRed ? CARD_SUITS_RED[Math.floor(Math.random() * 2)] : CARD_SUITS_BLACK[Math.floor(Math.random() * 2)];
+  const val = CARD_VALUES[Math.floor(Math.random() * CARD_VALUES.length)];
+  return { suit, val, isRed };
+}
+
+let drawnCards = [];
+let riskGuessResult = null;
+
+function startRisk() {
+  if (!canRisk) return;
+  playButtonClick();
+  canRisk = false;
+  document.getElementById('gambleBtn').disabled = true;
+  document.getElementById('riskAmount').textContent = riskAmount + ' MARK';
+  document.getElementById('riskResult').textContent = '';
+  document.getElementById('riskResult').className = 'risk-result';
+
+  // Reset cards
+  drawnCards = [];
+  for (let i = 0; i < 3; i++) {
+    const card = document.getElementById('riskCard' + i);
+    card.textContent = '?';
+    card.style.background = '#f8f8f0';
+    card.style.color = '#333';
+  }
+
+  document.getElementById('riskRedBtn').disabled = false;
+  document.getElementById('riskBlackBtn').disabled = false;
+  document.getElementById('riskCollectBtn').disabled = false;
+  document.getElementById('riskOverlay').classList.add('active');
+}
+
+function riskGuess(color) {
+  const drawn = getRandomCard();
+  drawnCards.push(drawn);
+  const cardIdx = drawnCards.length - 1;
+  const cardEl = document.getElementById('riskCard' + cardIdx);
+
+  // Reveal card with animation
+  cardEl.classList.add('revealed');
+  cardEl.textContent = drawn.val + drawn.suit;
+  cardEl.style.color = drawn.isRed ? '#cc0000' : '#111';
+  cardEl.style.background = '#f8f8f0';
+
+  const won = (color === 'red' && drawn.isRed) || (color === 'black' && !drawn.isRed);
+
+  setTimeout(() => {
+    if (won) {
+      riskAmount *= 2;
+      document.getElementById('riskAmount').textContent = riskAmount + ' MARK';
+      document.getElementById('riskResult').textContent = '✦ VERDOPPELT! ✦';
+      document.getElementById('riskResult').className = 'risk-result win';
+      playRiskWin();
+
+      if (drawnCards.length >= 3) {
+        // Max risk reached - auto collect
+        setTimeout(() => collectRisk(), 1000);
+      }
+    } else {
+      document.getElementById('riskResult').textContent = '✗ VERLOREN!';
+      document.getElementById('riskResult').className = 'risk-result lose';
+      playRiskLose();
+      document.getElementById('riskRedBtn').disabled = true;
+      document.getElementById('riskBlackBtn').disabled = true;
+      document.getElementById('riskCollectBtn').disabled = true;
+
+      // Deduct the risk amount from credits
+      credits -= riskAmount;
+      if (credits < 0) credits = 0;
+      currentWin = 0;
+      updateDisplays();
+
+      setTimeout(() => {
+        document.getElementById('riskOverlay').classList.remove('active');
+        document.getElementById('cabinet').classList.remove('winning');
+        document.getElementById('winLine').classList.remove('active');
+        setMessage(credits > 0 ? 'NOCHMAL?' : 'MÜNZE EINWERFEN');
+        if (credits <= 0) document.getElementById('startBtn').disabled = true;
+      }, 1500);
+    }
+  }, 300);
+}
+
+function collectRisk() {
+  playButtonClick();
+  // riskAmount already added to credits during win, nothing to do extra
+  currentWin = riskAmount;
+  updateDisplays();
+  document.getElementById('riskOverlay').classList.remove('active');
+  setMessage('KASSIERT: ' + riskAmount + ' MARK');
+  canRisk = false;
+  setTimeout(() => {
+    document.getElementById('cabinet').classList.remove('winning');
+    document.getElementById('winLine').classList.remove('active');
+    setMessage(credits > 0 ? 'WEITER SPIELEN?' : 'MÜNZE EINWERFEN');
+  }, 1500);
+}
+
+// ====== KEYBOARD CONTROLS ======
+document.addEventListener('keydown', e => {
+  switch (e.key) {
+    case ' ': e.preventDefault(); spin(); break;
+    case '1': toggleHold(0); break;
+    case '2': toggleHold(1); break;
+    case '3': toggleHold(2); break;
+    case 'Enter': insertCoin(); break;
+    case 'r': case 'R': startRisk(); break;
+  }
+});
+
+// ====== INIT ======
+initReels();
+startLights();
+updateDisplays();
+
+// Keyboard hints
+setTimeout(() => {
+  const hint = document.createElement('div');
+  hint.style.cssText = 'position:fixed;bottom:12px;left:50%;transform:translateX(-50%);color:#666;font-size:10px;letter-spacing:2px;font-family:monospace;pointer-events:none;';
+  hint.textContent = 'ENTER=MÜNZE  SPACE=START  1/2/3=HOLD  R=RISIKO';
+  document.body.appendChild(hint);
+}, 100);
+</script>
+</body>
+</html>
