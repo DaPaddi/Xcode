@@ -8,7 +8,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  background: #111;
+  background: #0a0600;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,16 +19,28 @@ body {
 /* ===== CABINET ===== */
 .cabinet {
   width: 560px;
-  background: linear-gradient(180deg, #1a1a1a 0%, #111 60%, #0d0d0d 100%);
+  background: linear-gradient(180deg, #1a1000 0%, #110900 60%, #0d0700 100%);
   border-radius: 28px 28px 16px 16px;
   border: 5px solid #000;
   box-shadow:
-    0 0 0 2px #333,
-    0 0 40px rgba(0,0,0,0.9),
-    inset 0 1px 2px rgba(255,255,255,0.05);
+    0 0 0 2px #3a1a00,
+    0 0 40px rgba(0,0,0,0.95),
+    0 0 80px rgba(120,40,0,0.15),
+    inset 0 1px 2px rgba(255,180,50,0.04),
+    inset 0 0 120px rgba(0,0,0,0.6);
   padding: 14px 14px 18px;
   position: relative;
   overflow: visible;
+}
+/* warm vignette overlay */
+.cabinet::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px 24px 12px 12px;
+  background: radial-gradient(ellipse at 50% 40%, transparent 40%, rgba(0,0,0,0.55) 100%);
+  pointer-events: none;
+  z-index: 200;
 }
 
 /* ===== TOP INFO BAR ===== */
@@ -41,40 +53,40 @@ body {
 }
 .top-label {
   font-size: 9px;
-  color: #888;
+  color: #7a5a20;
   letter-spacing: 1px;
   font-weight: 700;
 }
-.top-label span { color: #ffcc00; }
+.top-label span { color: #cc9900; }
 
-/* ===== LED DISPLAYS ROW ===== */
-.led-row {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 6px;
-}
+/* ===== ANALOG BACKLIT DISPLAY ===== */
 .led-display {
-  background: #000;
-  border: 2px solid #1a0000;
-  border-radius: 4px;
+  background: #1a0f00;
+  border: 2px solid #3a1800;
+  border-radius: 5px;
   padding: 3px 10px;
-  font-family: 'Courier New', monospace;
+  font-family: 'Georgia', serif;
   font-size: 20px;
   font-weight: 900;
-  color: #ff2200;
-  text-shadow: 0 0 8px #ff0000, 0 0 16px #ff0000;
+  font-style: italic;
+  color: #3a2000;
   letter-spacing: 3px;
   min-width: 80px;
   text-align: center;
-  box-shadow: inset 0 0 8px rgba(255,0,0,0.2);
+  transition: all 0.15s;
 }
-.led-display.green {
-  color: #00ff44;
-  text-shadow: 0 0 8px #00ff44, 0 0 16px #00cc33;
-  border-color: #001a00;
-  box-shadow: inset 0 0 8px rgba(0,255,68,0.15);
+.led-display.lit {
+  background: radial-gradient(ellipse at 50% 40%, #3a1800 0%, #1a0c00 100%);
+  border-color: #cc6600;
+  color: #fff8e0;
+  text-shadow: 0 0 12px #ff9900, 0 0 24px #ff6600, 0 0 40px rgba(255,120,0,0.4);
+  box-shadow: 0 0 14px rgba(255,120,0,0.5), inset 0 0 8px rgba(255,100,0,0.2);
+}
+.led-display.green.lit {
+  color: #e8ffee;
+  text-shadow: 0 0 12px #44ff88, 0 0 24px #22cc55, 0 0 40px rgba(0,200,80,0.4);
+  border-color: #00aa44;
+  box-shadow: 0 0 14px rgba(0,200,80,0.5), inset 0 0 8px rgba(0,180,60,0.2);
 }
 .led-small {
   font-size: 13px;
@@ -83,17 +95,25 @@ body {
   letter-spacing: 2px;
 }
 
+/* ===== LED ROW ===== */
+.led-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
 /* ===== TOP WIN PANEL ===== */
 .top-win-panel {
-  background: linear-gradient(180deg, #0a0a0a, #141414);
-  border: 2px solid #222;
+  background: linear-gradient(180deg, #0e0800, #160e00);
+  border: 2px solid #2a1500;
   border-radius: 10px;
   padding: 8px 10px 6px;
   margin-bottom: 8px;
   position: relative;
 }
 
-/* Win number labels around top */
 .win-labels-top {
   display: flex;
   justify-content: space-around;
@@ -106,17 +126,45 @@ body {
   align-items: center;
   gap: 1px;
 }
+/* Backlit win badge panels */
 .win-badge-num {
+  font-family: 'Impact', 'Arial Black', sans-serif;
   font-size: 28px;
   font-weight: 900;
   line-height: 1;
   font-style: italic;
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.8);
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: #1a0f00;
+  border: 2px solid #2a1500;
+  color: #3a2000;
+  transition: all 0.2s;
 }
-.win-badge-num.big { font-size: 42px; color: #ffcc00; text-shadow: 0 0 12px #ff8800, 2px 2px 0 #883300; }
-.win-badge-num.med { font-size: 32px; color: #ff8800; text-shadow: 0 0 8px #ff6600, 2px 2px 0 #662200; }
-.win-badge-num.sml { font-size: 22px; color: #ff6600; }
-.win-badge-label { font-size: 7px; color: #888; letter-spacing: 1px; text-transform: uppercase; }
+.win-badge-num.big {
+  font-size: 42px;
+  background: radial-gradient(ellipse at 50% 35%, #3a1800 0%, #1a0a00 100%);
+  border-color: #cc6600;
+  color: #fff8e0;
+  text-shadow: 0 0 14px #ff9900, 0 0 28px #ff6600, 0 0 50px rgba(255,120,0,0.45);
+  box-shadow: 0 0 18px rgba(255,130,0,0.55), inset 0 0 10px rgba(255,100,0,0.15);
+}
+.win-badge-num.med {
+  font-size: 32px;
+  background: radial-gradient(ellipse at 50% 35%, #2e1200 0%, #160900 100%);
+  border-color: #994400;
+  color: #ffd080;
+  text-shadow: 0 0 10px #ff8800, 0 0 20px #ff5500, 0 0 35px rgba(255,100,0,0.35);
+  box-shadow: 0 0 12px rgba(255,100,0,0.4), inset 0 0 8px rgba(255,80,0,0.1);
+}
+.win-badge-num.sml {
+  font-size: 22px;
+  background: radial-gradient(ellipse at 50% 35%, #221000 0%, #110800 100%);
+  border-color: #662200;
+  color: #cc8040;
+  text-shadow: 0 0 8px #ff6600, 0 0 16px rgba(255,80,0,0.3);
+  box-shadow: 0 0 8px rgba(255,80,0,0.25);
+}
+.win-badge-label { font-size: 7px; color: #5a3a10; letter-spacing: 1px; text-transform: uppercase; }
 
 /* JUMBO JUMBO logo */
 .logo-area {
@@ -148,7 +196,7 @@ body {
   filter: drop-shadow(0 0 6px rgba(255,200,0,0.8));
 }
 @keyframes sunSpin {
-  0%,100% { transform: translateX(-50%) scale(1); filter: drop-shadow(0 0 6px rgba(255,200,0,0.8)); }
+  0%,100% { transform: translateX(-50%) scale(1);   filter: drop-shadow(0 0 6px rgba(255,200,0,0.8)); }
   50%      { transform: translateX(-50%) scale(1.1); filter: drop-shadow(0 0 12px rgba(255,200,0,1)); }
 }
 
@@ -159,13 +207,25 @@ body {
   margin-top: 2px;
 }
 .win-mid-badge {
+  font-family: 'Impact', 'Arial Black', sans-serif;
   font-size: 20px;
   font-weight: 900;
   font-style: italic;
-  color: #ff6600;
-  text-shadow: 1px 1px 0 #330000;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #1a0f00;
+  border: 2px solid #2a1400;
+  color: #7a3a10;
+  text-shadow: 0 0 6px rgba(180,60,0,0.3);
 }
-.win-mid-badge.highlight { color: #ffcc00; font-size: 26px; }
+.win-mid-badge.highlight {
+  background: radial-gradient(ellipse at 50% 35%, #2a1200 0%, #150900 100%);
+  border-color: #aa5500;
+  color: #ffcc00;
+  font-size: 26px;
+  text-shadow: 0 0 10px #ff8800, 0 0 22px rgba(255,100,0,0.4);
+  box-shadow: 0 0 10px rgba(255,100,0,0.35);
+}
 
 /* ===== MIDDLE SECTION ===== */
 .middle-section {
@@ -180,21 +240,21 @@ body {
   width: 70px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 .ladder-title {
   font-size: 7px;
-  color: #888;
+  color: #5a3a10;
   letter-spacing: 2px;
   text-align: center;
   margin-bottom: 2px;
-  writing-mode: horizontal-tb;
 }
+/* Backlit rung panels */
 .side-rung {
-  height: 22px;
-  border-radius: 4px;
-  border: 2px solid #333;
-  background: #111;
+  height: 24px;
+  border-radius: 5px;
+  border: 2px solid #2a1400;
+  background: #1a0f00;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -202,47 +262,54 @@ body {
   transition: all 0.2s;
 }
 .side-rung .sr-val {
+  font-family: 'Georgia', serif;
   font-size: 11px;
   font-weight: 900;
-  color: #555;
-  font-family: 'Courier New', monospace;
+  font-style: italic;
+  color: #3a2000;
 }
 .side-rung .sr-label {
   font-size: 7px;
-  color: #333;
-  letter-spacing: 0;
+  color: #2a1500;
 }
+/* Active = fully lit bulb */
 .side-rung.active {
-  border-color: #ffcc00;
-  background: linear-gradient(90deg, #221100, #332200);
-  box-shadow: 0 0 8px rgba(255,180,0,0.5);
-  animation: sideRungPulse 0.5s infinite alternate;
+  border-color: #cc6600;
+  background: radial-gradient(ellipse at 50% 35%, #3a1800 0%, #1f0d00 100%);
+  box-shadow: 0 0 12px #ff9900, 0 0 24px #ff6600, 0 0 40px rgba(255,120,0,0.4), inset 0 0 6px rgba(255,100,0,0.2);
+  animation: sideRungPulse 0.55s infinite alternate;
 }
-.side-rung.active .sr-val { color: #ffdd00; font-size: 13px; }
-.side-rung.active .sr-label { color: #aa8800; }
-.side-rung.passed { border-color: #003300; background: #050f05; }
-.side-rung.passed .sr-val { color: #226622; }
+.side-rung.active .sr-val {
+  color: #fff8e0;
+  font-size: 13px;
+  text-shadow: 0 0 8px #ffaa00, 0 0 16px #ff7700;
+}
+.side-rung.active .sr-label { color: #cc8800; }
+/* Passed = dim warm orange tint */
+.side-rung.passed {
+  border-color: #3a2000;
+  background: #1f1000;
+}
+.side-rung.passed .sr-val { color: #6a3a10; }
+/* Collect star rungs */
 .side-rung.collect {
-  border-color: #115511;
-  background: linear-gradient(90deg, #031203, #051805);
+  border-color: #1a3a10;
+  background: #0e1a08;
 }
-.side-rung.collect .sr-val { color: #339933; }
-.side-rung.collect.active { border-color: #00ff44; box-shadow: 0 0 10px rgba(0,255,68,0.5); }
-.side-rung.collect.active .sr-val { color: #00ff44; }
+.side-rung.collect .sr-val { color: #336622; }
+.side-rung.collect .sr-label { color: #2a5520; }
+.side-rung.collect.active {
+  border-color: #00cc44;
+  background: radial-gradient(ellipse at 50% 35%, #0a2a10 0%, #051408 100%);
+  box-shadow: 0 0 12px #00cc44, 0 0 24px #009933, 0 0 40px rgba(0,180,60,0.4);
+}
+.side-rung.collect.active .sr-val {
+  color: #aaffc8;
+  text-shadow: 0 0 8px #00ff66, 0 0 16px #00cc44;
+}
 @keyframes sideRungPulse {
-  from { box-shadow: 0 0 4px rgba(255,180,0,0.4); }
-  to   { box-shadow: 0 0 14px rgba(255,180,0,0.9); }
-}
-.side-ladder-label {
-  font-size: 7px;
-  font-weight: 900;
-  color: #666;
-  letter-spacing: 2px;
-  text-align: center;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  position: absolute;
+  from { box-shadow: 0 0 6px #ff8800, 0 0 14px #ff5500, 0 0 26px rgba(255,100,0,0.25); }
+  to   { box-shadow: 0 0 16px #ffaa00, 0 0 28px #ff7700, 0 0 50px rgba(255,140,0,0.5); }
 }
 .ladder-wrap {
   position: relative;
@@ -252,7 +319,7 @@ body {
 }
 .ladder-side-text {
   font-size: 7px;
-  color: #555;
+  color: #5a3a10;
   letter-spacing: 1px;
   text-align: center;
   margin: 1px 0;
@@ -261,15 +328,15 @@ body {
 /* ===== REELS PANEL ===== */
 .reels-panel {
   flex: 1;
-  background: #0a1a2a;
+  background: radial-gradient(ellipse at 50% 50%, #1a1000 0%, #0d0800 60%, #080500 100%);
   border-radius: 10px;
-  border: 3px solid #1a3a5a;
+  border: 3px solid #2a1500;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 0 30px rgba(0,50,120,0.5), 0 0 20px rgba(0,80,180,0.2);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.7), 0 0 20px rgba(100,40,0,0.15);
 }
 
-/* Orange oval frame around reels */
+/* Orange oval neon tube frame */
 .oval-frame {
   position: absolute;
   top: 50%;
@@ -281,14 +348,34 @@ body {
   border: 6px solid transparent;
   background: transparent;
   box-shadow:
-    0 0 0 3px #cc4400,
-    0 0 0 7px #ff8800,
-    0 0 0 9px #cc4400,
-    inset 0 0 0 3px #cc4400,
-    inset 0 0 0 7px #ff8800,
-    inset 0 0 0 9px #cc4400;
+    0 0 0 2px #882200,
+    0 0 0 5px #ff6600,
+    0 0 0 7px #cc4400,
+    0 0 12px 7px rgba(255,100,0,0.45),
+    0 0 28px 7px rgba(255,60,0,0.2),
+    inset 0 0 0 2px #882200,
+    inset 0 0 0 5px #ff6600,
+    inset 0 0 0 7px #cc4400,
+    inset 0 0 12px 2px rgba(255,100,0,0.3);
   pointer-events: none;
   z-index: 3;
+  animation: neonTube 2.5s ease-in-out infinite alternate;
+}
+@keyframes neonTube {
+  from {
+    box-shadow:
+      0 0 0 2px #882200, 0 0 0 5px #ff6600, 0 0 0 7px #cc4400,
+      0 0 10px 6px rgba(255,100,0,0.4), 0 0 24px 6px rgba(255,60,0,0.18),
+      inset 0 0 0 2px #882200, inset 0 0 0 5px #ff6600, inset 0 0 0 7px #cc4400,
+      inset 0 0 10px 2px rgba(255,100,0,0.25);
+  }
+  to {
+    box-shadow:
+      0 0 0 2px #aa3300, 0 0 0 5px #ff8800, 0 0 0 7px #dd5500,
+      0 0 18px 8px rgba(255,130,0,0.55), 0 0 40px 8px rgba(255,80,0,0.25),
+      inset 0 0 0 2px #aa3300, inset 0 0 0 5px #ff8800, inset 0 0 0 7px #dd5500,
+      inset 0 0 16px 3px rgba(255,120,0,0.38);
+  }
 }
 .oval-inner-glow {
   position: absolute;
@@ -298,27 +385,25 @@ body {
   width: 88%;
   height: 68%;
   border-radius: 50%;
-  border: 2px solid rgba(255,150,0,0.3);
+  border: 2px solid rgba(255,150,0,0.2);
   pointer-events: none;
   z-index: 2;
-  box-shadow: 0 0 20px rgba(255,100,0,0.15);
+  box-shadow: 0 0 20px rgba(255,80,0,0.1);
 }
 
-/* Risiko button on left of reels */
 .risiko-side-btn {
   position: absolute;
   left: 6px;
   top: 50%;
-  transform: translateY(-50%);
   z-index: 10;
   writing-mode: vertical-rl;
   text-orientation: mixed;
   transform: translateY(-50%) rotate(180deg);
   font-size: 8px;
   font-weight: 900;
-  color: #00ccff;
+  color: #cc7700;
   letter-spacing: 3px;
-  text-shadow: 0 0 6px #00aaff;
+  text-shadow: 0 0 6px #ff9900;
 }
 .stop-side-btn {
   position: absolute;
@@ -329,9 +414,9 @@ body {
   writing-mode: vertical-rl;
   font-size: 8px;
   font-weight: 900;
-  color: #ff4444;
+  color: #cc3300;
   letter-spacing: 3px;
-  text-shadow: 0 0 6px #ff2200;
+  text-shadow: 0 0 6px #ff4400;
 }
 
 /* Reels */
@@ -347,16 +432,16 @@ body {
 .reel-frame {
   flex: 1;
   height: 120px;
-  background: linear-gradient(180deg, #050f18, #071520, #050f18);
-  border: 2px solid #1a4a7a;
+  background: linear-gradient(180deg, #0e0800, #140c00, #0e0800);
+  border: 2px solid #2a1500;
   border-radius: 6px;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 8px rgba(0,100,200,0.2);
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.85), 0 0 6px rgba(120,50,0,0.15);
 }
 .reel-frame.held {
   border-color: #00cc44;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 12px rgba(0,200,68,0.4);
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.85), 0 0 12px rgba(0,200,68,0.45);
 }
 .reel-strip {
   position: absolute;
@@ -372,12 +457,12 @@ body {
 }
 .reel-overlay-top {
   position: absolute; top: 0; left: 0; right: 0; height: 28px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.85), transparent);
+  background: linear-gradient(180deg, rgba(0,0,0,0.88), transparent);
   pointer-events: none; z-index: 2;
 }
 .reel-overlay-bot {
   position: absolute; bottom: 0; left: 0; right: 0; height: 28px;
-  background: linear-gradient(0deg, rgba(0,0,0,0.85), transparent);
+  background: linear-gradient(0deg, rgba(0,0,0,0.88), transparent);
   pointer-events: none; z-index: 2;
 }
 .hold-label {
@@ -391,8 +476,8 @@ body {
 
 /* ===== AUSSPIELUNG ARROW ===== */
 .ausspielung-area {
-  background: linear-gradient(180deg, #0a1400, #111a00);
-  border: 2px solid #223300;
+  background: linear-gradient(180deg, #0e0800, #130c00);
+  border: 2px solid #2a1500;
   border-radius: 8px;
   padding: 5px 10px;
   margin-bottom: 8px;
@@ -403,7 +488,7 @@ body {
 .ausspielung-arrow {
   font-size: 11px;
   font-weight: 900;
-  color: #ffcc00;
+  color: #cc9900;
   letter-spacing: 3px;
   text-shadow: 0 0 8px #ff8800;
   display: flex;
@@ -416,7 +501,7 @@ body {
   height: 14px;
   background: linear-gradient(90deg, #1a0a00, #332200, #1a0a00);
   border-radius: 7px;
-  border: 2px solid #554400;
+  border: 2px solid #4a2800;
   position: relative;
   overflow: hidden;
 }
@@ -437,25 +522,40 @@ body {
 }
 .disp-panel {
   flex: 1;
-  background: #000;
-  border: 2px solid #1a0000;
+  background: #1a0f00;
+  border: 2px solid #3a1800;
   border-radius: 5px;
   padding: 3px 6px;
   text-align: center;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
 }
-.disp-label { font-size: 7px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
+.disp-label { font-size: 7px; color: #5a3010; letter-spacing: 2px; text-transform: uppercase; }
 .disp-val {
-  font-size: 18px; font-weight: 900; font-family: 'Courier New', monospace;
-  letter-spacing: 2px; line-height: 1.2;
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 2px;
+  line-height: 1.2;
+  color: #3a2000;
 }
-.disp-val.red   { color: #ff2200; text-shadow: 0 0 6px #ff0000; }
-.disp-val.green { color: #00ff44; text-shadow: 0 0 6px #00cc33; }
-.disp-val.amber { color: #ffcc00; text-shadow: 0 0 6px #ff8800; }
+.disp-val.lit-red {
+  color: #fff8e0;
+  text-shadow: 0 0 10px #ff4400, 0 0 22px #cc2200, 0 0 38px rgba(220,50,0,0.4);
+}
+.disp-val.lit-green {
+  color: #e8ffee;
+  text-shadow: 0 0 10px #44ff88, 0 0 22px #22cc55, 0 0 38px rgba(0,200,80,0.4);
+}
+.disp-val.lit-amber {
+  color: #fff8e0;
+  text-shadow: 0 0 10px #ff9900, 0 0 22px #ff6600, 0 0 38px rgba(255,120,0,0.4);
+}
 
 /* Message */
 .msg-bar {
-  background: #000;
-  border: 2px solid #110000;
+  background: #1a0f00;
+  border: 2px solid #2a1400;
   border-radius: 5px;
   padding: 4px 8px;
   text-align: center;
@@ -464,18 +564,24 @@ body {
   display: flex; align-items: center; justify-content: center;
 }
 .msg-text {
-  font-size: 11px; font-weight: 900; color: #ffcc00;
-  letter-spacing: 2px; font-family: 'Courier New', monospace;
-  text-shadow: 0 0 6px #ff8800;
+  font-family: 'Georgia', serif;
+  font-size: 11px; font-weight: 900; font-style: italic;
+  color: #cc8800;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(200,120,0,0.4);
 }
-.msg-text.win-flash { color: #ff4400; animation: blink 0.35s infinite; }
+.msg-text.win-flash {
+  color: #fff8e0;
+  text-shadow: 0 0 10px #ff9900, 0 0 22px #ff6600;
+  animation: blink 0.35s infinite;
+}
 @keyframes blink { 50% { opacity: 0.3; } }
 
 /* ===== BUTTON PANEL ===== */
 .button-panel {
-  background: linear-gradient(180deg, #0d0d0d, #0a0a0a);
+  background: linear-gradient(180deg, #0f0900, #0a0600);
   border-radius: 10px;
-  border: 2px solid #1a1a1a;
+  border: 2px solid #1e1000;
   padding: 12px 10px;
 }
 .hold-row {
@@ -489,9 +595,9 @@ body {
   max-width: 100px;
   height: 36px;
   border-radius: 6px;
-  border: 2px solid #333;
-  background: linear-gradient(180deg, #2a2a2a, #111);
-  color: #777;
+  border: 2px solid #2a1a00;
+  background: linear-gradient(180deg, #221200, #110900);
+  color: #5a3a10;
   font-size: 8px;
   font-weight: 900;
   letter-spacing: 1px;
@@ -503,11 +609,46 @@ body {
 }
 .hold-btn:active, .hold-btn.pressed { top: 3px; box-shadow: none; }
 .hold-btn.active {
-  background: linear-gradient(180deg, #005522, #003311);
+  background: linear-gradient(180deg, #003a15, #001f0a);
   border-color: #00aa44;
   color: #00ff66;
   text-shadow: 0 0 5px #00ff66;
-  box-shadow: 0 3px 0 #000, 0 0 8px rgba(0,200,68,0.3);
+  box-shadow: 0 3px 0 #000, 0 0 8px rgba(0,200,68,0.35);
+}
+
+/* ===== AUTOPLAY BUTTON ===== */
+.autoplay-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.autoplay-btn {
+  padding: 5px 22px;
+  border-radius: 6px;
+  border: 2px solid #2a2a2a;
+  background: linear-gradient(180deg, #1e1e1e, #0d0d0d);
+  color: #555;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #000;
+  transition: all 0.15s;
+  position: relative; top: 0;
+  text-transform: uppercase;
+}
+.autoplay-btn:active { top: 2px; box-shadow: none; }
+.autoplay-btn.active {
+  background: linear-gradient(180deg, #003a10, #001f08);
+  border-color: #00cc44;
+  color: #00ff66;
+  text-shadow: 0 0 8px #00ff66, 0 0 18px #00cc44;
+  box-shadow: 0 2px 0 #000, 0 0 12px rgba(0,220,70,0.45), inset 0 0 6px rgba(0,200,60,0.15);
+  animation: autoGlow 0.7s infinite alternate;
+}
+@keyframes autoGlow {
+  from { box-shadow: 0 2px 0 #000, 0 0 8px rgba(0,200,60,0.35); }
+  to   { box-shadow: 0 2px 0 #000, 0 0 18px rgba(0,240,80,0.6), 0 0 32px rgba(0,200,60,0.25); }
 }
 
 /* Main bottom buttons */
@@ -518,7 +659,7 @@ body {
   justify-content: center;
 }
 
-/* 1÷1 Risiko buttons (orange, round) */
+/* 1÷1 Risiko buttons */
 .btn-risiko {
   width: 62px; height: 62px;
   border-radius: 50%;
@@ -538,9 +679,9 @@ body {
 .btn-risiko .btn-line1 { font-size: 16px; }
 .btn-risiko .btn-line2 { font-size: 8px; letter-spacing: 1px; opacity: 0.8; }
 .btn-risiko:active { top: 5px; box-shadow: 0 0 0 #882200, 0 1px 4px rgba(0,0,0,0.6); }
-.btn-risiko:disabled { filter: brightness(0.4); cursor: not-allowed; }
+.btn-risiko:disabled { filter: brightness(0.35); cursor: not-allowed; }
 
-/* Start button (red, wider) */
+/* Start button */
 .btn-start {
   width: 90px; height: 62px;
   border-radius: 10px;
@@ -559,11 +700,11 @@ body {
 }
 .btn-start:active, .btn-start.pressed { top: 5px; box-shadow: 0 0 0 #440000, 0 1px 4px rgba(0,0,0,0.6); }
 .btn-start:disabled {
-  background: radial-gradient(ellipse at 50% 35%, #442222, #221111);
-  border-color: #330000; color: #442222; cursor: not-allowed;
+  background: radial-gradient(ellipse at 50% 35%, #2a1010, #150808);
+  border-color: #2a0000; color: #331111; cursor: not-allowed;
 }
 
-/* Stop button (smaller, dark red) */
+/* Stop button */
 .btn-stop {
   width: 62px; height: 62px;
   border-radius: 50%;
@@ -592,9 +733,9 @@ body {
 .coin-insert-btn {
   padding: 4px 12px;
   border-radius: 5px;
-  border: 2px solid #555;
-  background: linear-gradient(180deg, #333, #1a1a1a);
-  color: #aaa;
+  border: 2px solid #4a2a00;
+  background: linear-gradient(180deg, #2a1500, #150a00);
+  color: #8a5a20;
   font-size: 9px;
   font-weight: 900;
   letter-spacing: 1px;
@@ -611,13 +752,13 @@ body {
   width: 40px; height: 7px;
   background: #000;
   border-radius: 4px;
-  border: 2px solid #444;
+  border: 2px solid #3a1a00;
 }
 
 /* ===== CABINET WIN FLASH ===== */
 @keyframes cabinetFlash {
-  0%,100% { box-shadow: 0 0 0 2px #333, 0 0 40px rgba(0,0,0,0.9); }
-  50%      { box-shadow: 0 0 0 2px #ff8800, 0 0 60px rgba(255,150,0,0.3), 0 0 100px rgba(255,100,0,0.15); }
+  0%,100% { box-shadow: 0 0 0 2px #3a1a00, 0 0 40px rgba(0,0,0,0.95); }
+  50%      { box-shadow: 0 0 0 2px #ff8800, 0 0 60px rgba(255,150,0,0.35), 0 0 100px rgba(255,100,0,0.18); }
 }
 .cabinet.winning { animation: cabinetFlash 0.4s infinite; }
 
@@ -643,19 +784,22 @@ body {
   gap: 2px;
 }
 .risk-ladder-title {
+  font-family: 'Georgia', serif;
   font-size: 9px;
   font-weight: 900;
-  color: #00ccff;
+  font-style: italic;
+  color: #cc8800;
   letter-spacing: 2px;
   text-align: center;
   margin-bottom: 3px;
-  text-shadow: 0 0 6px #00aaff;
+  text-shadow: 0 0 8px #ff9900;
 }
+/* Backlit risk rungs */
 .risk-rung {
-  height: 26px;
+  height: 28px;
   border-radius: 5px;
-  border: 2px solid #1a1a1a;
-  background: #0a0a0a;
+  border: 2px solid #2a1400;
+  background: #1a0f00;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -663,35 +807,46 @@ body {
   transition: all 0.2s;
 }
 .risk-rung .rr-val {
-  font-size: 11px; font-weight: 900;
-  color: #333; font-family: 'Courier New', monospace;
+  font-family: 'Georgia', serif;
+  font-size: 11px; font-weight: 900; font-style: italic;
+  color: #3a2000;
 }
 .risk-rung .rr-arrow { font-size: 9px; color: transparent; }
-.risk-rung.collect { border-color: #115511; }
-.risk-rung.collect .rr-val { color: #226622; }
-.risk-rung.passed { border-color: #002200; background: #020902; }
-.risk-rung.passed .rr-val { color: #115511; }
-.risk-rung.current {
-  border-color: #ffcc00 !important;
-  background: linear-gradient(90deg, #1a1000, #221500) !important;
-  box-shadow: 0 0 10px rgba(255,180,0,0.6);
-  animation: rungGlow 0.5s infinite alternate;
+.risk-rung.collect {
+  border-color: #1a3a10;
+  background: #0e1808;
 }
-.risk-rung.current .rr-val { color: #ffdd00 !important; font-size: 13px; }
-.risk-rung.current .rr-arrow { color: #ffdd00; }
+.risk-rung.collect .rr-val { color: #336622; }
+.risk-rung.passed {
+  border-color: #2a1800;
+  background: #130d00;
+}
+.risk-rung.passed .rr-val { color: #6a3a10; }
+.risk-rung.current {
+  border-color: #cc6600 !important;
+  background: radial-gradient(ellipse at 50% 35%, #3a1800 0%, #1f0d00 100%) !important;
+  box-shadow: 0 0 12px #ff9900, 0 0 24px #ff6600, 0 0 40px rgba(255,120,0,0.4) !important;
+  animation: rungGlow 0.55s infinite alternate;
+}
+.risk-rung.current .rr-val {
+  color: #fff8e0 !important;
+  font-size: 13px;
+  text-shadow: 0 0 8px #ffaa00, 0 0 18px #ff7700;
+}
+.risk-rung.current .rr-arrow { color: #ffcc44; }
 .risk-rung.lost-here {
-  border-color: #880000 !important;
-  background: #1a0000 !important;
+  border-color: #cc0000 !important;
+  background: radial-gradient(ellipse at 50% 35%, #2a0000 0%, #150000 100%) !important;
   animation: rungLose 0.25s infinite alternate;
 }
-.risk-rung.lost-here .rr-val { color: #ff2200 !important; }
+.risk-rung.lost-here .rr-val { color: #ff4444 !important; text-shadow: 0 0 8px #ff0000; }
 @keyframes rungGlow {
-  from { box-shadow: 0 0 6px rgba(255,180,0,0.4); }
-  to   { box-shadow: 0 0 16px rgba(255,180,0,0.9); }
+  from { box-shadow: 0 0 6px #ff8800, 0 0 14px #ff5500, 0 0 26px rgba(255,100,0,0.25); }
+  to   { box-shadow: 0 0 18px #ffaa00, 0 0 30px #ff7700, 0 0 50px rgba(255,140,0,0.5); }
 }
 @keyframes rungLose {
-  from { background: #1a0000 !important; }
-  to   { background: #330000 !important; }
+  from { background: radial-gradient(ellipse at 50% 35%, #200000 0%, #100000 100%) !important; }
+  to   { background: radial-gradient(ellipse at 50% 35%, #3a0000 0%, #1e0000 100%) !important; }
 }
 
 /* Risiko right side */
@@ -704,32 +859,40 @@ body {
   gap: 6px;
 }
 .risk-title {
+  font-family: 'Georgia', serif;
   font-size: 22px; font-weight: 900; font-style: italic;
-  color: #00ccff;
+  color: #ffaa00;
   letter-spacing: 4px;
-  text-shadow: 0 0 16px #0099ff;
+  text-shadow: 0 0 16px #ff8800, 0 0 30px rgba(255,120,0,0.4);
 }
 .risk-pot {
-  font-size: 42px; font-weight: 900;
-  color: #ff4400;
-  font-family: 'Courier New', monospace;
-  text-shadow: 0 0 16px #ff2200;
+  font-family: 'Georgia', serif;
+  font-size: 42px; font-weight: 900; font-style: italic;
+  color: #fff8e0;
+  text-shadow: 0 0 16px #ff9900, 0 0 32px #ff6600, 0 0 50px rgba(255,120,0,0.4);
   line-height: 1;
 }
-.risk-pot-label { font-size: 12px; color: #882200; }
+.risk-pot-label {
+  font-size: 12px; color: #8a5520;
+  font-family: 'Georgia', serif; font-style: italic;
+}
 .risk-card-wrap {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
 }
-.risk-question { font-size: 10px; color: #ffcc00; letter-spacing: 2px; font-weight: 900; }
+.risk-question {
+  font-family: 'Georgia', serif;
+  font-size: 10px; color: #cc9900; letter-spacing: 2px; font-weight: 900; font-style: italic;
+  text-shadow: 0 0 6px rgba(200,150,0,0.4);
+}
 .risk-card {
   width: 70px; height: 94px;
   border-radius: 7px;
-  border: 3px solid #444;
-  background: linear-gradient(135deg, #0d1b2a, #1a3a5a);
+  border: 3px solid #3a2000;
+  background: linear-gradient(135deg, #1a0f00, #2a1800);
   display: flex; align-items: center; justify-content: center;
   font-size: 30px; font-weight: 900;
-  color: #2a4a6a;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+  color: #3a2000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.7), inset 0 0 8px rgba(0,0,0,0.5);
 }
 .risk-card.revealed {
   background: #f5f0e8 !important;
@@ -747,9 +910,10 @@ body {
   font-size: 14px; font-weight: 900; letter-spacing: 2px;
   height: 22px; text-align: center;
   text-shadow: 0 0 8px currentColor;
+  font-family: 'Georgia', serif; font-style: italic;
 }
-.risk-result.win  { color: #00ff44; }
-.risk-result.lose { color: #ff2200; }
+.risk-result.win  { color: #00ff66; }
+.risk-result.lose { color: #ff3300; }
 .risk-btns {
   display: flex; flex-direction: column; gap: 5px; width: 100%;
 }
@@ -786,7 +950,7 @@ body {
   <!-- LED DISPLAY ROW -->
   <div class="led-row">
     <div class="led-display led-small" id="ledLeft">00</div>
-    <div class="led-display" id="ledCenter">100</div>
+    <div class="led-display lit" id="ledCenter">100</div>
     <div class="led-display led-small green" id="ledRight">00</div>
   </div>
 
@@ -802,7 +966,7 @@ body {
         <div class="win-badge-label">Jumbo-Sp.</div>
       </div>
       <div class="win-badge" style="position:relative; padding-top:14px;">
-        <div class="sun-mascot" id="sunMascot">☀️</div>
+        <div class="sun-mascot" id="sunMascot">&#x2600;&#xFE0F;</div>
         <div class="win-badge-num big">100</div>
         <div class="win-badge-label">JUMBO-SP.</div>
       </div>
@@ -834,13 +998,9 @@ body {
     <!-- LEFT SONDERSPIEL LADDER -->
     <div class="ladder-wrap">
       <div class="ladder-side-text">AUSSPIELUNG</div>
-      <div class="side-ladder" id="leftLadder">
-        <!-- filled by JS: rungs 50,25,12,6,3 -->
-      </div>
+      <div class="side-ladder" id="leftLadder"></div>
       <div class="ladder-side-text" style="margin-top:3px;">JACKPOT</div>
-      <div class="side-ladder" id="leftJackpot">
-        <!-- bottom values -->
-      </div>
+      <div class="side-ladder" id="leftJackpot"></div>
     </div>
 
     <!-- REELS PANEL -->
@@ -874,9 +1034,7 @@ body {
     <!-- RIGHT SONDERSPIEL LADDER -->
     <div class="ladder-wrap">
       <div class="ladder-side-text">AUSSPIELUNG</div>
-      <div class="side-ladder" id="rightLadder">
-        <!-- filled by JS: rungs 40,20,10,5,2 -->
-      </div>
+      <div class="side-ladder" id="rightLadder"></div>
       <div class="ladder-side-text" style="margin-top:3px;">JACKPOT</div>
       <div class="side-ladder" id="rightJackpot"></div>
     </div>
@@ -886,15 +1044,15 @@ body {
   <!-- AUSSPIELUNG ARROW BAR -->
   <div class="ausspielung-area">
     <div class="ausspielung-arrow">
-      <span>◀◀</span>
+      <span>&#9668;&#9668;</span>
       <div class="arrow-track">
-        <div class="arrow-indicator" id="arrowIndicator">▶</div>
+        <div class="arrow-indicator" id="arrowIndicator">&#9658;</div>
       </div>
-      <span style="color:#ffcc00; font-size:9px; letter-spacing:3px;">AUSSPIELUNG</span>
+      <span style="color:#cc9900; font-size:9px; letter-spacing:3px;">AUSSPIELUNG</span>
       <div class="arrow-track" style="transform:scaleX(-1);">
-        <div class="arrow-indicator" id="arrowIndicator2">▶</div>
+        <div class="arrow-indicator" id="arrowIndicator2">&#9658;</div>
       </div>
-      <span>▶▶</span>
+      <span>&#9658;&#9658;</span>
     </div>
   </div>
 
@@ -902,21 +1060,21 @@ body {
   <div class="display-row">
     <div class="disp-panel">
       <div class="disp-label">KREDIT</div>
-      <div class="disp-val green" id="creditsDisplay">00</div>
+      <div class="disp-val lit-green" id="creditsDisplay">00</div>
     </div>
     <div class="disp-panel">
       <div class="disp-label">GEWINN</div>
-      <div class="disp-val amber" id="winDisplay">00</div>
+      <div class="disp-val lit-amber" id="winDisplay">00</div>
     </div>
     <div class="disp-panel">
       <div class="disp-label">EINSATZ</div>
-      <div class="disp-val red" id="betDisplay">01</div>
+      <div class="disp-val lit-red" id="betDisplay">01</div>
     </div>
   </div>
 
   <!-- MESSAGE BAR -->
   <div class="msg-bar">
-    <div class="msg-text" id="messageText">MÜNZE EINWERFEN</div>
+    <div class="msg-text" id="messageText">M&#xFC;NZE EINWERFEN</div>
   </div>
 
   <!-- BUTTON PANEL -->
@@ -927,28 +1085,32 @@ body {
       <button class="hold-btn" id="holdBtn1" onclick="toggleHold(1)">HOLD 2</button>
       <button class="hold-btn" id="holdBtn2" onclick="toggleHold(2)">HOLD 3</button>
     </div>
+    <!-- Autoplay -->
+    <div class="autoplay-row">
+      <button class="autoplay-btn" id="autoPlayBtn" onclick="toggleAutoPlay()">&#9654; AUTO PLAY</button>
+    </div>
     <!-- Coin insert -->
     <div class="coin-area">
-      <button class="coin-insert-btn" onclick="insertCoin()">MÜNZE +1 DM</button>
+      <button class="coin-insert-btn" onclick="insertCoin()">M&#xFC;NZE +1 DM</button>
       <div class="coin-slot-visual">
         <div class="coin-slot"></div>
-        <span style="font-size:8px;color:#444;letter-spacing:1px;">EINWURF</span>
+        <span style="font-size:8px;color:#3a2000;letter-spacing:1px;">EINWURF</span>
       </div>
     </div>
     <!-- Main buttons -->
     <div class="main-btn-row">
       <button class="btn-risiko" id="gambleBtn" onclick="startRisk()" disabled>
-        <span class="btn-line1">1÷1</span>
+        <span class="btn-line1">1&#247;1</span>
         <span class="btn-line2">RISIKO</span>
       </button>
       <button class="btn-start" id="startBtn" onclick="spin()" disabled>START</button>
       <button class="btn-risiko" id="gambleBtn2" onclick="startRisk()" disabled>
-        <span class="btn-line1">1÷1</span>
+        <span class="btn-line1">1&#247;1</span>
         <span class="btn-line2">RISIKO</span>
       </button>
       <button class="btn-stop" id="stopBtn" onclick="stopAllReels()">STOP</button>
       <button class="btn-risiko" id="gambleBtn3" onclick="startRisk()" disabled>
-        <span class="btn-line1">1÷1</span>
+        <span class="btn-line1">1&#247;1</span>
         <span class="btn-line2">RISIKO</span>
       </button>
     </div>
@@ -958,10 +1120,10 @@ body {
   <div class="risk-overlay" id="riskOverlay">
     <div class="risk-ladder-panel">
       <div class="risk-ladder-title">RISIKO</div>
-      <div id="riskLadderEl"><!-- JS --></div>
+      <div id="riskLadderEl"></div>
     </div>
     <div class="risk-right">
-      <div class="risk-title">✦ RISIKO ✦</div>
+      <div class="risk-title">&#x2726; RISIKO &#x2726;</div>
       <div>
         <div class="risk-pot" id="riskPotDisplay">0</div>
         <div class="risk-pot-label">MARK</div>
@@ -973,8 +1135,8 @@ body {
       </div>
       <div class="risk-btns">
         <div class="risk-btn-row">
-          <button class="risk-btn rb-red"   id="riskRedBtn"   onclick="riskGuess('red')">ROT<br>♥ ♦</button>
-          <button class="risk-btn rb-black"  id="riskBlackBtn" onclick="riskGuess('black')">SCHWARZ<br>♣ ♠</button>
+          <button class="risk-btn rb-red"   id="riskRedBtn"   onclick="riskGuess('red')">ROT<br>&#x2665; &#x2666;</button>
+          <button class="risk-btn rb-black"  id="riskBlackBtn" onclick="riskGuess('black')">SCHWARZ<br>&#x2663; &#x2660;</button>
         </div>
         <button class="rb-collect" id="riskCollectBtn" onclick="collectRisk()">NEHMEN</button>
       </div>
@@ -984,141 +1146,375 @@ body {
 </div><!-- /cabinet -->
 
 <script>
-// ====== AUDIO ======
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx = null;
+// ============================================================
+// ANALOG SOUND ENGINE
+// ============================================================
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioCtx = null;
 function getAudioCtx() {
   if (!audioCtx) audioCtx = new AudioContext();
   if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
-function playTone(freq, dur, type='square', vol=0.25, delay=0) {
-  const ctx = getAudioCtx();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.type = type; osc.frequency.value = freq;
-  const t = ctx.currentTime + delay;
-  gain.gain.setValueAtTime(0, t);
-  gain.gain.linearRampToValueAtTime(vol, t + 0.01);
-  gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
-  osc.start(t); osc.stop(t + dur + 0.05);
+
+function addVibrato(osc, ctx, rate, depth) {
+  rate = rate || 6; depth = depth || 20;
+  try {
+    var lfo = ctx.createOscillator();
+    var lfoGain = ctx.createGain();
+    lfo.frequency.value = rate;
+    lfoGain.gain.value = depth;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.detune);
+    lfo.start();
+    lfo.stop(ctx.currentTime + 3);
+  } catch(e) {}
 }
+
+function makeNoiseBuf(ctx, dur) {
+  var len = Math.ceil(ctx.sampleRate * dur);
+  var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  var d = buf.getChannelData(0);
+  for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  return buf;
+}
+
 function playCoinInsert() {
-  playTone(800, 0.05, 'square', 0.2);
-  playTone(1200, 0.08, 'square', 0.2, 0.06);
-  playTone(600, 0.1, 'square', 0.15, 0.1);
+  try {
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    for (var b = 0; b < 2; b++) {
+      (function(bb) {
+        var src = ctx.createBufferSource();
+        src.buffer = makeNoiseBuf(ctx, 0.025);
+        var hp = ctx.createBiquadFilter();
+        hp.type = 'highpass'; hp.frequency.value = 4000;
+        var g = ctx.createGain();
+        g.gain.setValueAtTime(0.35, now + bb * 0.04);
+        g.gain.exponentialRampToValueAtTime(0.001, now + bb * 0.04 + 0.025);
+        src.connect(hp); hp.connect(g); g.connect(ctx.destination);
+        src.start(now + bb * 0.04);
+      })(b);
+    }
+    var osc1 = ctx.createOscillator(), g1 = ctx.createGain();
+    osc1.type = 'sine'; osc1.frequency.value = 1800;
+    g1.gain.setValueAtTime(0.28, now + 0.03);
+    g1.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc1.connect(g1); g1.connect(ctx.destination);
+    osc1.start(now + 0.03); osc1.stop(now + 0.22);
+
+    var osc2 = ctx.createOscillator(), g2 = ctx.createGain();
+    osc2.type = 'sine'; osc2.frequency.value = 900;
+    g2.gain.setValueAtTime(0.18, now + 0.05);
+    g2.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc2.connect(g2); g2.connect(ctx.destination);
+    osc2.start(now + 0.05); osc2.stop(now + 0.32);
+
+    var tail = ctx.createBufferSource();
+    tail.buffer = makeNoiseBuf(ctx, 0.18);
+    var bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = 1200; bp.Q.value = 3;
+    var gt = ctx.createGain();
+    gt.gain.setValueAtTime(0.08, now + 0.1);
+    gt.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    tail.connect(bp); bp.connect(gt); gt.connect(ctx.destination);
+    tail.start(now + 0.1);
+  } catch(e) {}
 }
+
 function playReelSpin() {
   try {
-    const ctx = getAudioCtx();
-    const buf = ctx.createBuffer(1, ctx.sampleRate*0.06, ctx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*0.12;
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    const filt = ctx.createBiquadFilter();
-    filt.type = 'bandpass'; filt.frequency.value = 350; filt.Q.value = 0.5;
-    src.connect(filt); filt.connect(ctx.destination);
-    src.start(); src.stop(ctx.currentTime + 0.06);
-  } catch(e){}
-}
-function playReelStop(i) {
-  const f = [300,275,255][i];
-  playTone(f, 0.07, 'sawtooth', 0.22);
-  playTone(f*0.7, 0.11, 'square', 0.13, 0.05);
-}
-function playWinSmall() {
-  [523,659,784,1047].forEach((f,i) => playTone(f, 0.12, 'square', 0.22, i*0.1));
-}
-function playWinBig() {
-  [523,659,784,1047,1319,1047,784,1047].forEach((f,i) => playTone(f, 0.14, 'square', 0.28, i*0.08));
-}
-function playWinJackpot() {
-  [784,880,988,1047,1175,1319,1175,1047,988,880,784,659,523].forEach((f,i) => {
-    playTone(f, 0.18, 'square', 0.28, i*0.1);
-    playTone(f*0.5, 0.18, 'sawtooth', 0.13, i*0.1);
-  });
-  setTimeout(() => [1047,1319,1568,1319,1047,880,784].forEach((f,i) => playTone(f,0.14,'sine',0.28,i*0.12)), 1400);
-}
-function playCoinPayout() {
-  for (let i=0;i<8;i++) playTone(800+Math.random()*400, 0.04, 'square', 0.18, i*0.06);
-}
-function playRiskWin() {
-  [659,784,1047,1319].forEach((f,i) => playTone(f, 0.18, 'sine', 0.28, i*0.1));
-}
-function playRiskLose() {
-  playTone(200, 0.28, 'sawtooth', 0.28);
-  playTone(150, 0.38, 'sawtooth', 0.22, 0.25);
-}
-function playClick() { playTone(440, 0.04, 'square', 0.12); }
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    var src = ctx.createBufferSource();
+    src.buffer = makeNoiseBuf(ctx, 0.02);
+    var bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = 600; bp.Q.value = 8;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.22, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+    src.connect(bp); bp.connect(g); g.connect(ctx.destination);
+    src.start(now);
 
-// ====== REELS ======
-const REEL_STRIPS = [
+    var osc = ctx.createOscillator(), go = ctx.createGain();
+    osc.type = 'sawtooth'; osc.frequency.value = 180;
+    go.gain.setValueAtTime(0.12, now);
+    go.gain.exponentialRampToValueAtTime(0.001, now + 0.018);
+    osc.connect(go); go.connect(ctx.destination);
+    osc.start(now); osc.stop(now + 0.022);
+  } catch(e) {}
+}
+
+function playReelStop(reelIndex) {
+  try {
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    var baseFreqs = [100, 90, 80];
+    var base = baseFreqs[reelIndex] || 90;
+    var osc = ctx.createOscillator(), g = ctx.createGain();
+    osc.type = 'sine'; osc.frequency.value = base;
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(0.45, now + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(g); g.connect(ctx.destination);
+    osc.start(now); osc.stop(now + 0.22);
+
+    var osc2 = ctx.createOscillator(), g2 = ctx.createGain();
+    osc2.type = 'sawtooth'; osc2.frequency.value = 400;
+    g2.gain.setValueAtTime(0.3, now);
+    g2.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+    osc2.connect(g2); g2.connect(ctx.destination);
+    osc2.start(now); osc2.stop(now + 0.05);
+  } catch(e) {}
+}
+
+function playWinSmall() {
+  try {
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    [523, 659, 784, 1047].forEach(function(freq, i) {
+      var t = now + i * 0.11;
+      var osc = ctx.createOscillator(), g = ctx.createGain();
+      osc.type = 'triangle'; osc.frequency.value = freq;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.35, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+      osc.connect(g); g.connect(ctx.destination);
+      osc.start(t); osc.stop(t + 0.18);
+      var osc2 = ctx.createOscillator(), g2 = ctx.createGain();
+      osc2.type = 'sine'; osc2.frequency.value = freq * 2;
+      g2.gain.setValueAtTime(0.06, t); g2.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+      osc2.connect(g2); g2.connect(ctx.destination);
+      osc2.start(t); osc2.stop(t + 0.14);
+    });
+  } catch(e) {}
+}
+
+function playWinBig() {
+  try {
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    [523, 659, 784, 1047, 1319, 1568, 1319, 1047].forEach(function(freq, i) {
+      var t = now + i * 0.13;
+      ['triangle','sine'].forEach(function(type) {
+        var osc = ctx.createOscillator(), g = ctx.createGain();
+        osc.type = type; osc.frequency.value = freq;
+        var vol = type === 'triangle' ? 0.3 : 0.12;
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+        osc.connect(g); g.connect(ctx.destination);
+        addVibrato(osc, ctx, 6, 18);
+        osc.start(t); osc.stop(t + 0.2);
+      });
+    });
+  } catch(e) {}
+}
+
+function playWinJackpot() {
+  try {
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    [261, 329, 392].forEach(function(freq) {
+      var osc = ctx.createOscillator(), g = ctx.createGain();
+      osc.type = 'triangle'; osc.frequency.value = freq;
+      g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(0.22, now + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+      osc.connect(g); g.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.9);
+    });
+    var melody = [523,587,659,784,880,1047,880,784,659,523,392,523];
+    melody.forEach(function(freq, i) {
+      var t = now + 1.0 + i * 0.15;
+      var osc = ctx.createOscillator(), g = ctx.createGain();
+      osc.type = 'triangle'; osc.frequency.value = freq;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.32, t + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+      osc.connect(g); g.connect(ctx.destination);
+      addVibrato(osc, ctx, 6, 20);
+      osc.start(t); osc.stop(t + 0.22);
+    });
+    for (var c = 0; c < 10; c++) {
+      (function(cc){ setTimeout(function(){ playCoinPayout(); }, 1000 + melody.length * 150 + cc * 130); })(c);
+    }
+  } catch(e) {}
+}
+
+function playCoinPayout() {
+  try {
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    var pitch = 1 + (Math.random() * 0.3 - 0.15);
+    [1200 * pitch, 2400 * pitch].forEach(function(freq, i) {
+      var osc = ctx.createOscillator(), g = ctx.createGain();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      g.gain.setValueAtTime(i === 0 ? 0.28 : 0.14, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+      osc.connect(g); g.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.1);
+    });
+  } catch(e) {}
+}
+
+function playRiskWin() {
+  try {
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    var root = 440;
+    [root, root*1.25, root*1.5, root*2].forEach(function(freq, i) {
+      var osc = ctx.createOscillator(), g = ctx.createGain();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      g.gain.setValueAtTime(0.3, now + i * 0.1);
+      g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.22);
+      osc.connect(g); g.connect(ctx.destination);
+      osc.start(now + i * 0.1); osc.stop(now + i * 0.1 + 0.26);
+    });
+  } catch(e) {}
+}
+
+function playRiskLose() {
+  try {
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    var osc = ctx.createOscillator();
+    var lp = ctx.createBiquadFilter();
+    var g = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(400, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.6);
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(800, now);
+    lp.frequency.exponentialRampToValueAtTime(200, now + 0.6);
+    g.gain.setValueAtTime(0.35, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+    osc.connect(lp); lp.connect(g); g.connect(ctx.destination);
+    osc.start(now); osc.stop(now + 0.7);
+  } catch(e) {}
+}
+
+function playAutoSpinTick() {
+  try {
+    var ctx = getAudioCtx();
+    var now = ctx.currentTime;
+    var osc = ctx.createOscillator(), g = ctx.createGain();
+    osc.type = 'sine'; osc.frequency.value = 200;
+    g.gain.setValueAtTime(0.1, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+    osc.connect(g); g.connect(ctx.destination);
+    osc.start(now); osc.stop(now + 0.04);
+  } catch(e) {}
+}
+
+function playClick() { playAutoSpinTick(); }
+
+// ============================================================
+// REELS
+// ============================================================
+var REEL_STRIPS = [
   ['🍒','🍒','🍋','🍒','🍊','🍒','🍋','🍇','🍒','🍊','🍋','⭐','🍒','🍒','🍊','🍋','🍇','🍒','🔔','🍋','🍒','⭐','🍊','🍒','7️⃣','🍒','🍊','🍋','🍒','🍇'],
   ['🍒','🍋','🍒','🍊','🍒','🍋','🍒','🍇','🍋','🍒','⭐','🍊','🍒','🍋','🍒','🔔','🍋','🍒','🍊','🍒','🍋','🍇','🍒','⭐','🍊','🍒','7️⃣','🍋','🍒','🍊'],
   ['🍒','🍊','🍒','🍋','🍒','🍊','🍒','🍒','🍋','🍊','🍒','🍇','🍋','🍒','⭐','🍊','🍒','🍋','🍒','🔔','🍊','🍋','🍒','🍇','⭐','🍒','🍊','7️⃣','🍋','🍒'],
 ];
 
-// ====== GAME STATE ======
-let credits = 0, currentWin = 0, spinning = false;
-let holdState = [false,false,false];
-let reelPositions = [0,1,2];
-let currentSymbols = ['🍒','🍋','🍊'];
-let canHold = false, canRisk = false, riskAmount = 0;
-let spinIntervals = [null,null,null];
-let reelStopped = [false,false,false];
-let forceStop = false;
-let gameCount = 0;
+// ============================================================
+// GAME STATE
+// ============================================================
+var credits = 0, currentWin = 0, spinning = false;
+var holdState = [false,false,false];
+var reelPositions = [0,1,2];
+var currentSymbols = ['🍒','🍋','🍊'];
+var canHold = false, canRisk = false, riskAmount = 0;
+var spinIntervals = [null,null,null];
+var reelStopped = [false,false,false];
+var forceStop = false;
+var gameCount = 0;
 
-// ====== SIDE LADDERS (Sonderspiele) ======
-const LEFT_LADDER_VALS  = [[50,false],[25,false],[12,true],[6,false],[3,false]];
-const RIGHT_LADDER_VALS = [[40,false],[20,true],[10,false],[5,false],[2,false]];
-const LEFT_JACKPOT_VALS  = [370,180,90,40,'00'];
-const RIGHT_JACKPOT_VALS = [310,130,70,30,'00'];
-let leftPos = -1, rightPos = -1;
+// ============================================================
+// AUTOPLAY
+// ============================================================
+var autoPlay = false;
+var autoPlayInterval = null;
+var autoPlaySpeed = 1200;
+
+function toggleAutoPlay() {
+  autoPlay = !autoPlay;
+  var btn = document.getElementById('autoPlayBtn');
+  if (autoPlay) {
+    btn.classList.add('active');
+    btn.textContent = '■ AUTO STOP';
+    runAutoPlay();
+  } else {
+    autoPlay = false;
+    clearTimeout(autoPlayInterval);
+    btn.classList.remove('active');
+    btn.textContent = '► AUTO PLAY';
+  }
+}
+
+function runAutoPlay() {
+  if (!autoPlay) return;
+  if (credits <= 0) {
+    toggleAutoPlay();
+    setMsg('M\xFCNZE EINWERFEN');
+    return;
+  }
+  if (!spinning && !riskActive) {
+    playAutoSpinTick();
+    spin();
+  }
+  autoPlayInterval = setTimeout(runAutoPlay, autoPlaySpeed + 2000);
+}
+
+// ============================================================
+// SIDE LADDERS
+// ============================================================
+var LEFT_LADDER_VALS  = [[50,false],[25,false],[12,true],[6,false],[3,false]];
+var RIGHT_LADDER_VALS = [[40,false],[20,true],[10,false],[5,false],[2,false]];
+var LEFT_JACKPOT_VALS  = [370,180,90,40,'00'];
+var RIGHT_JACKPOT_VALS = [310,130,70,30,'00'];
+var leftPos = -1, rightPos = -1;
 
 function buildSideLadders() {
-  buildOneLadder('leftLadder',  LEFT_LADDER_VALS,  leftPos,  false);
-  buildOneLadder('rightLadder', RIGHT_LADDER_VALS, rightPos, false);
+  buildOneLadder('leftLadder',  LEFT_LADDER_VALS,  leftPos);
+  buildOneLadder('rightLadder', RIGHT_LADDER_VALS, rightPos);
   buildJackpotLadder('leftJackpot',  LEFT_JACKPOT_VALS);
   buildJackpotLadder('rightJackpot', RIGHT_JACKPOT_VALS);
 }
-function buildOneLadder(id, vals, pos, isRight) {
-  const el = document.getElementById(id);
+function buildOneLadder(id, vals, pos) {
+  var el = document.getElementById(id);
   el.innerHTML = '';
-  // render top to bottom (high first), so use [...vals].reverse() in display
-  const toShow = [...vals].reverse();
-  toShow.forEach((entry, dispIdx) => {
-    const realIdx = vals.length - 1 - dispIdx;
-    const [val, isCollect] = entry;
-    const rung = document.createElement('div');
+  var toShow = vals.slice().reverse();
+  toShow.forEach(function(entry, dispIdx) {
+    var realIdx = vals.length - 1 - dispIdx;
+    var val = entry[0], isCollect = entry[1];
+    var rung = document.createElement('div');
     rung.className = 'side-rung' + (isCollect?' collect':'');
     if (realIdx === pos) rung.classList.add('active');
     else if (realIdx < pos) rung.classList.add('passed');
-    rung.innerHTML = `<span class="sr-val">${val}</span><span class="sr-label">${isCollect?'★':''}</span>`;
+    rung.innerHTML = '<span class="sr-val">'+val+'</span><span class="sr-label">'+(isCollect?'★':'')+'</span>';
     el.appendChild(rung);
   });
 }
 function buildJackpotLadder(id, vals) {
-  const el = document.getElementById(id);
+  var el = document.getElementById(id);
   el.innerHTML = '';
-  vals.forEach(v => {
-    const rung = document.createElement('div');
+  vals.forEach(function(v) {
+    var rung = document.createElement('div');
     rung.className = 'side-rung';
     rung.style.height = '18px';
-    rung.innerHTML = `<span class="sr-val" style="font-size:9px;color:#222">${v}</span>`;
+    rung.innerHTML = '<span class="sr-val" style="font-size:9px;color:#3a2000">'+v+'</span>';
     el.appendChild(rung);
   });
 }
 
-// ====== REEL INIT ======
+// ============================================================
+// REEL INIT
+// ============================================================
 function initReels() {
-  for (let r=0;r<3;r++) {
-    const strip = document.getElementById('strip'+r);
+  for (var r=0;r<3;r++) {
+    var strip = document.getElementById('strip'+r);
     strip.innerHTML = '';
-    [...REEL_STRIPS[r],...REEL_STRIPS[r]].forEach(sym => {
-      const cell = document.createElement('div');
+    var doubled = REEL_STRIPS[r].concat(REEL_STRIPS[r]);
+    doubled.forEach(function(sym) {
+      var cell = document.createElement('div');
       cell.className = 'reel-cell';
       cell.textContent = sym;
       strip.appendChild(cell);
@@ -1127,53 +1523,64 @@ function initReels() {
   }
 }
 function setReelPos(r, pos) {
-  const strip = document.getElementById('strip'+r);
-  const len = REEL_STRIPS[r].length;
-  const idx = ((pos % len) + len) % len;
-  strip.style.transform = `translateY(${-idx*120}px)`;
+  var strip = document.getElementById('strip'+r);
+  var len = REEL_STRIPS[r].length;
+  var idx = ((pos % len) + len) % len;
+  strip.style.transform = 'translateY('+(-idx*120)+'px)';
   currentSymbols[r] = REEL_STRIPS[r][idx];
 }
 
-// ====== MARQUEE / ARROW ======
-let arrowPos = 10, arrowDir = 1;
-setInterval(() => {
+// ============================================================
+// MARQUEE / ARROW
+// ============================================================
+var arrowPos = 10, arrowDir = 1;
+setInterval(function() {
   arrowPos += arrowDir * 4;
   if (arrowPos > 80) arrowDir = -1;
   if (arrowPos < 10) arrowDir = 1;
-  const a1 = document.getElementById('arrowIndicator');
-  const a2 = document.getElementById('arrowIndicator2');
+  var a1 = document.getElementById('arrowIndicator');
+  var a2 = document.getElementById('arrowIndicator2');
   if (a1) a1.style.left = arrowPos+'%';
   if (a2) a2.style.left = arrowPos+'%';
 }, 60);
 
-// ====== DISPLAYS ======
+// ============================================================
+// DISPLAYS
+// ============================================================
 function updateDisplays() {
   document.getElementById('creditsDisplay').textContent = String(credits).padStart(2,'0');
-  document.getElementById('winDisplay').textContent = String(currentWin).padStart(2,'0');
-  document.getElementById('ledLeft').textContent  = String(credits).padStart(2,'0');
-  document.getElementById('ledRight').textContent = String(currentWin).padStart(2,'0');
+  document.getElementById('winDisplay').textContent     = String(currentWin).padStart(2,'0');
+  document.getElementById('ledLeft').textContent        = String(credits).padStart(2,'0');
+  document.getElementById('ledRight').textContent       = String(currentWin).padStart(2,'0');
+  document.getElementById('ledLeft').classList.toggle('lit', credits > 0);
+  document.getElementById('ledRight').classList.toggle('lit', currentWin > 0);
 }
-function setMsg(txt, cls='') {
-  const el = document.getElementById('messageText');
+function setMsg(txt, cls) {
+  cls = cls || '';
+  var el = document.getElementById('messageText');
   el.textContent = txt;
   el.className = 'msg-text' + (cls ? ' '+cls : '');
 }
 function setRisikoBtns(enabled) {
-  ['gambleBtn','gambleBtn2','gambleBtn3'].forEach(id => {
+  ['gambleBtn','gambleBtn2','gambleBtn3'].forEach(function(id) {
     document.getElementById(id).disabled = !enabled;
   });
 }
 
-// ====== COIN ======
+// ============================================================
+// COIN
+// ============================================================
 function insertCoin() {
   playCoinInsert();
   credits++;
   updateDisplays();
-  setMsg('VIEL GLÜCK!');
+  setMsg('VIEL GL\xDCCK!');
   document.getElementById('startBtn').disabled = false;
 }
 
-// ====== HOLD ======
+// ============================================================
+// HOLD
+// ============================================================
 function toggleHold(idx) {
   if (!canHold || spinning) return;
   playClick();
@@ -1182,13 +1589,15 @@ function toggleHold(idx) {
   document.getElementById('reel'+idx).classList.toggle('held', holdState[idx]);
 }
 
-// ====== WIN TABLE ======
+// ============================================================
+// WIN TABLE
+// ============================================================
 function getWin(syms) {
-  const [a,b,c] = syms;
+  var a=syms[0], b=syms[1], c=syms[2];
   if (a===b && b===c) {
     if (a==='7️⃣') return 100;
     if (a==='🔔')  return 50;
-    if (a==='⭐')  return 30;
+    if (a==='⭐')        return 30;
     if (a==='🍇')  return 20;
     if (a==='🍊')  return 15;
     if (a==='🍋')  return 10;
@@ -1199,7 +1608,9 @@ function getWin(syms) {
   return 0;
 }
 
-// ====== SPIN ======
+// ============================================================
+// SPIN
+// ============================================================
 function spin() {
   if (credits<=0 || spinning) return;
   playClick();
@@ -1213,44 +1624,45 @@ function spin() {
   gameCount++;
   document.getElementById('gameCounter').textContent = String(gameCount).padStart(8,'0');
 
-  const targets = reelPositions.map((p,r) =>
-    holdState[r] ? p : Math.floor(Math.random()*REEL_STRIPS[r].length)
-  );
+  var targets = reelPositions.map(function(p,r) {
+    return holdState[r] ? p : Math.floor(Math.random()*REEL_STRIPS[r].length);
+  });
   reelStopped = [false,false,false];
-  const stopDelays = [1400, 2000, 2600];
+  var stopDelays = [1400, 2000, 2600];
 
-  for (let r=0; r<3; r++) {
+  for (var r=0; r<3; r++) {
     if (holdState[r]) { reelStopped[r]=true; continue; }
-    const ri = r;
-    let frame = reelPositions[ri];
-    const sLen = REEL_STRIPS[ri].length;
-    spinIntervals[ri] = setInterval(() => {
-      frame = (frame+1) % sLen;
-      setReelPos(ri, frame);
-      if (Math.random()<0.35) playReelSpin();
-    }, 38);
-    const doStop = () => {
-      clearInterval(spinIntervals[ri]);
-      reelPositions[ri] = targets[ri];
-      setReelPos(ri, targets[ri]);
-      playReelStop(ri);
-      reelStopped[ri] = true;
-      if (reelStopped[0]&&reelStopped[1]&&reelStopped[2]) setTimeout(onAllStopped, 250);
-    };
-    setTimeout(doStop, forceStop ? 200 : stopDelays[r]);
+    (function(ri) {
+      var frame = reelPositions[ri];
+      var sLen = REEL_STRIPS[ri].length;
+      spinIntervals[ri] = setInterval(function() {
+        frame = (frame+1) % sLen;
+        setReelPos(ri, frame);
+        if (Math.random()<0.35) playReelSpin();
+      }, 38);
+      var doStop = function() {
+        clearInterval(spinIntervals[ri]);
+        reelPositions[ri] = targets[ri];
+        setReelPos(ri, targets[ri]);
+        playReelStop(ri);
+        reelStopped[ri] = true;
+        if (reelStopped[0]&&reelStopped[1]&&reelStopped[2]) setTimeout(onAllStopped, 250);
+      };
+      setTimeout(doStop, forceStop ? 200 : stopDelays[ri]);
+    })(r);
   }
   if (holdState[0]&&holdState[1]&&holdState[2]) setTimeout(onAllStopped, 350);
   holdState=[false,false,false];
-  for (let r=0;r<3;r++) {
-    document.getElementById('holdBtn'+r).classList.remove('active');
-    document.getElementById('reel'+r).classList.remove('held');
+  for (var rr=0;rr<3;rr++) {
+    document.getElementById('holdBtn'+rr).classList.remove('active');
+    document.getElementById('reel'+rr).classList.remove('held');
   }
 }
 
 function stopAllReels() {
   if (!spinning) return;
   forceStop = true;
-  for (let r=0;r<3;r++) {
+  for (var r=0;r<3;r++) {
     if (!reelStopped[r]) {
       clearInterval(spinIntervals[r]);
       reelPositions[r] = Math.floor(Math.random()*REEL_STRIPS[r].length);
@@ -1264,38 +1676,42 @@ function stopAllReels() {
 
 function onAllStopped() {
   spinning = false;
-  const syms = currentSymbols.slice();
-  const win = getWin(syms);
+  var syms = currentSymbols.slice();
+  var win = getWin(syms);
 
   if (win>0) {
     currentWin = win;
     credits += win;
     updateDisplays();
     document.getElementById('cabinet').classList.add('winning');
-    if (win>=100) { playWinJackpot(); setMsg('JACKPOT! '+win+' MARK','win-flash'); setTimeout(payoutCoins,500); }
-    else if (win>=20) { playWinBig(); setMsg('SUPER GEWINN! '+win,'win-flash'); setTimeout(payoutCoins,300); }
-    else { playWinSmall(); setMsg('GEWINN: '+win+' MARK'); }
+    if (win>=100)     { playWinJackpot(); setMsg('JACKPOT! '+win+' MARK','win-flash'); setTimeout(payoutCoins,500); }
+    else if (win>=20) { playWinBig();     setMsg('SUPER GEWINN! '+win,'win-flash');    setTimeout(payoutCoins,300); }
+    else              { playWinSmall();   setMsg('GEWINN: '+win+' MARK'); }
     canRisk = true; riskAmount = win;
-    setTimeout(() => setRisikoBtns(true), 600);
-    // Advance side ladder
+    setTimeout(function(){ setRisikoBtns(true); }, 600);
     if (win >= 8) advanceSideLadder();
+    if (autoPlay) {
+      clearTimeout(autoPlayInterval);
+      autoPlayInterval = setTimeout(runAutoPlay, 3000);
+    }
   } else {
     setMsg('KEIN GEWINN');
   }
 
-  setTimeout(() => {
+  var delay = win >= 20 ? 2600 : 900;
+  setTimeout(function() {
     canHold = credits > 0;
     if (credits>0) {
       document.getElementById('startBtn').disabled = false;
       setMsg(win>0 ? 'WEITER SPIELEN?' : 'NOCHMAL?');
     } else {
-      setMsg('MÜNZE EINWERFEN');
+      setMsg('M\xDCNZE EINWERFEN');
+      if (autoPlay) toggleAutoPlay();
     }
-  }, win>=20 ? 2600 : 900);
+  }, delay);
 }
 
 function advanceSideLadder() {
-  // Alternate between left and right
   if (Math.random() < 0.5) {
     leftPos = Math.min(leftPos+1, LEFT_LADDER_VALS.length-1);
   } else {
@@ -1305,43 +1721,46 @@ function advanceSideLadder() {
 }
 
 function payoutCoins() {
-  let c=0;
-  const iv = setInterval(()=>{ playCoinPayout(); if(++c>=5) clearInterval(iv); },150);
+  var c=0;
+  var iv = setInterval(function(){ playCoinPayout(); if(++c>=5) clearInterval(iv); },150);
 }
 
-// ====== RISIKO LEITER ======
-const RISK_RUNGS = [
+// ============================================================
+// RISIKO LEITER
+// ============================================================
+var RISK_RUNGS = [
   [1,false],[2,false],[3,true],[5,false],[8,false],
   [10,true],[15,false],[20,true],[30,false],[50,true],[100,false],[200,true]
 ];
-let ladderPos = 0, riskActive = false, riskGuessing = false;
+var ladderPos = 0, riskActive = false, riskGuessing = false;
 
-const CARD_SUITS_RED   = ['♥','♦'];
-const CARD_SUITS_BLACK = ['♣','♠'];
-const CARD_VALS = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+var CARD_SUITS_RED   = ['♥','♦'];
+var CARD_SUITS_BLACK = ['♣','♠'];
+var CARD_VALS = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
 function randCard() {
-  const isRed = Math.random()<0.5;
-  const suit = isRed ? CARD_SUITS_RED[Math.floor(Math.random()*2)] : CARD_SUITS_BLACK[Math.floor(Math.random()*2)];
-  return { val: CARD_VALS[Math.floor(Math.random()*CARD_VALS.length)], suit, isRed };
+  var isRed = Math.random()<0.5;
+  var suit = isRed ? CARD_SUITS_RED[Math.floor(Math.random()*2)] : CARD_SUITS_BLACK[Math.floor(Math.random()*2)];
+  return { val: CARD_VALS[Math.floor(Math.random()*CARD_VALS.length)], suit: suit, isRed: isRed };
 }
 
 function buildRiskLadder() {
-  const el = document.getElementById('riskLadderEl');
+  var el = document.getElementById('riskLadderEl');
   el.innerHTML = '';
   el.style.display = 'flex';
   el.style.flexDirection = 'column-reverse';
   el.style.gap = '2px';
-  RISK_RUNGS.forEach(([val, isCollect], i) => {
-    const rung = document.createElement('div');
+  RISK_RUNGS.forEach(function(entry, i) {
+    var val = entry[0], isCollect = entry[1];
+    var rung = document.createElement('div');
     rung.className = 'risk-rung' + (isCollect?' collect':'');
     rung.id = 'rrung_'+i;
-    rung.innerHTML = `<span class="rr-val">${val}</span><span class="rr-arrow">◀</span>`;
+    rung.innerHTML = '<span class="rr-val">'+val+'</span><span class="rr-arrow">◄</span>';
     el.appendChild(rung);
   });
 }
 function updateRiskLadder() {
-  RISK_RUNGS.forEach((_,i) => {
-    const el = document.getElementById('rrung_'+i);
+  RISK_RUNGS.forEach(function(_,i) {
+    var el = document.getElementById('rrung_'+i);
     el.classList.remove('current','passed','lost-here');
     if (i===ladderPos) el.classList.add('current');
     else if (i<ladderPos) el.classList.add('passed');
@@ -1354,12 +1773,12 @@ function startRisk() {
   playClick();
   canRisk=false; riskActive=true; riskGuessing=false;
   setRisikoBtns(false);
-  // Find starting rung
+  if (autoPlay) clearTimeout(autoPlayInterval);
   ladderPos=0;
-  for (let i=0;i<RISK_RUNGS.length;i++) { if (RISK_RUNGS[i][0]<=riskAmount) ladderPos=i; }
+  for (var i=0;i<RISK_RUNGS.length;i++) { if (RISK_RUNGS[i][0]<=riskAmount) ladderPos=i; }
   buildRiskLadder();
   updateRiskLadder();
-  const card = document.getElementById('riskCard');
+  var card = document.getElementById('riskCard');
   card.textContent='?'; card.className='risk-card';
   document.getElementById('riskResult').textContent='';
   document.getElementById('riskResult').className='risk-result';
@@ -1376,18 +1795,18 @@ function riskGuess(color) {
   document.getElementById('riskBlackBtn').disabled=true;
   document.getElementById('riskCollectBtn').disabled=true;
 
-  const drawn = randCard();
-  const cardEl = document.getElementById('riskCard');
+  var drawn = randCard();
+  var cardEl = document.getElementById('riskCard');
   cardEl.className = 'risk-card';
 
-  setTimeout(() => {
+  setTimeout(function() {
     cardEl.textContent = drawn.val + drawn.suit;
     cardEl.classList.add('revealed', drawn.isRed?'red':'black');
-    const won = (color==='red'&&drawn.isRed)||(color==='black'&&!drawn.isRed);
-    setTimeout(() => {
+    var won = (color==='red'&&drawn.isRed)||(color==='black'&&!drawn.isRed);
+    setTimeout(function() {
       if (won) {
         playRiskWin();
-        const next = ladderPos+1;
+        var next = ladderPos+1;
         if (next >= RISK_RUNGS.length) {
           ladderPos = RISK_RUNGS.length-1;
           updateRiskLadder();
@@ -1397,10 +1816,10 @@ function riskGuess(color) {
         } else {
           ladderPos = next;
           updateRiskLadder();
-          document.getElementById('riskResult').textContent='▲ HÖHER! ▲';
+          document.getElementById('riskResult').textContent='▲ H\xD6HER! ▲';
           document.getElementById('riskResult').className='risk-result win';
-          const isCollect = RISK_RUNGS[ladderPos][1];
-          setTimeout(() => {
+          var isCollect = RISK_RUNGS[ladderPos][1];
+          setTimeout(function() {
             document.getElementById('riskResult').textContent = isCollect ? '★ KASSIEREN?' : '';
             if (isCollect) document.getElementById('riskResult').className='risk-result win';
             cardEl.textContent='?'; cardEl.className='risk-card';
@@ -1418,12 +1837,16 @@ function riskGuess(color) {
         credits -= riskAmount;
         if (credits<0) credits=0;
         currentWin=0; updateDisplays();
-        setTimeout(() => {
+        setTimeout(function() {
           riskActive=false;
           document.getElementById('riskOverlay').classList.remove('active');
           document.getElementById('cabinet').classList.remove('winning');
-          setMsg(credits>0?'NOCHMAL?':'MÜNZE EINWERFEN');
+          setMsg(credits>0?'NOCHMAL?':'M\xDCNZE EINWERFEN');
           if (credits<=0) document.getElementById('startBtn').disabled=true;
+          if (autoPlay) {
+            if (credits <= 0) { toggleAutoPlay(); }
+            else { autoPlayInterval = setTimeout(runAutoPlay, 1500); }
+          }
         }, 1800);
       }
     }, 350);
@@ -1434,8 +1857,8 @@ function collectRisk() {
   if (!riskActive) return;
   playClick();
   riskActive=false; riskGuessing=false;
-  const collected = RISK_RUNGS[ladderPos][0];
-  const bonus = collected - riskAmount;
+  var collected = RISK_RUNGS[ladderPos][0];
+  var bonus = collected - riskAmount;
   if (bonus>0) credits += bonus;
   currentWin = collected; riskAmount = collected;
   updateDisplays();
@@ -1445,18 +1868,24 @@ function collectRisk() {
   document.getElementById('riskResult').textContent='✦ KASSIERT! ✦';
   document.getElementById('riskResult').className='risk-result win';
   playCoinPayout();
-  setTimeout(() => {
+  setTimeout(function() {
     document.getElementById('riskOverlay').classList.remove('active');
     setMsg('KASSIERT: '+collected+' MARK');
-    setTimeout(() => {
+    setTimeout(function() {
       document.getElementById('cabinet').classList.remove('winning');
-      setMsg(credits>0?'WEITER SPIELEN?':'MÜNZE EINWERFEN');
+      setMsg(credits>0?'WEITER SPIELEN?':'M\xDCNZE EINWERFEN');
+      if (autoPlay) {
+        if (credits <= 0) { toggleAutoPlay(); }
+        else { autoPlayInterval = setTimeout(runAutoPlay, 1500); }
+      }
     }, 1200);
   }, 800);
 }
 
-// ====== KEYBOARD ======
-document.addEventListener('keydown', e => {
+// ============================================================
+// KEYBOARD
+// ============================================================
+document.addEventListener('keydown', function(e) {
   switch(e.key) {
     case ' ': e.preventDefault(); spin(); break;
     case '1': toggleHold(0); break;
@@ -1465,17 +1894,20 @@ document.addEventListener('keydown', e => {
     case 'Enter': insertCoin(); break;
     case 'r': case 'R': startRisk(); break;
     case 's': case 'S': stopAllReels(); break;
+    case 'a': case 'A': toggleAutoPlay(); break;
   }
 });
 
-// ====== INIT ======
+// ============================================================
+// INIT
+// ============================================================
 initReels();
 buildSideLadders();
 updateDisplays();
 
-const hint = document.createElement('div');
-hint.style.cssText='position:fixed;bottom:10px;left:50%;transform:translateX(-50%);color:#444;font-size:9px;letter-spacing:2px;font-family:monospace;pointer-events:none;';
-hint.textContent='ENTER=MÜNZE  SPACE=START  S=STOP  1/2/3=HOLD  R=RISIKO';
+var hint = document.createElement('div');
+hint.style.cssText = 'position:fixed;bottom:10px;left:50%;transform:translateX(-50%);color:#3a2000;font-size:9px;letter-spacing:2px;font-family:monospace;pointer-events:none;';
+hint.textContent = 'ENTER=M\xDCNZE  SPACE=START  S=STOP  1/2/3=HOLD  R=RISIKO  A=AUTO';
 document.body.appendChild(hint);
 </script>
 </body>
